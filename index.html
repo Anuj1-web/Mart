@@ -254,64 +254,16 @@ nav{
 
 /* ================= PRODUCTS ================= */
 
-/* ================= PRODUCTS GRID ================= */
-
 .products{
   width:92%;
   margin:auto;
 
   display:grid;
-
-  /* DESKTOP DEFAULT = 5 ITEMS */
-
   grid-template-columns:repeat(5,1fr);
 
   gap:18px;
 
   padding-bottom:120px;
-}
-
-/* ================= LARGE TABLET ================= */
-
-@media(max-width:1200px){
-
-  .products{
-
-    /* 4 ITEMS */
-
-    grid-template-columns:repeat(4,1fr);
-  }
-
-}
-
-/* ================= TABLET ================= */
-
-@media(max-width:900px){
-
-  .products{
-
-    /* 3 ITEMS */
-
-    grid-template-columns:repeat(3,1fr);
-
-    gap:16px;
-  }
-
-}
-
-/* ================= MOBILE ================= */
-
-@media(max-width:600px){
-
-  .products{
-
-    /* 2 ITEMS */
-
-    grid-template-columns:repeat(2,1fr);
-
-    gap:14px;
-  }
-
 }
 
 /* ================= CARD ================= */
