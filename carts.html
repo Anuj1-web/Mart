@@ -31,12 +31,13 @@ header{
   align-items:center;
 }
 
-/* CART ITEM */
+/* CONTAINER */
 .container{
   width:90%;
   margin:25px auto;
 }
 
+/* ITEM */
 .item{
   background:white;
   display:flex;
@@ -65,6 +66,7 @@ header{
   font-weight:600;
 }
 
+/* QTY CONTROLS */
 .qty{
   display:flex;
   align-items:center;
@@ -75,8 +77,21 @@ header{
   width:28px;
   height:28px;
   border:none;
+  border-radius:6px;
+  cursor:pointer;
   background:#0f2d4a;
   color:white;
+  font-size:16px;
+}
+
+/* REMOVE */
+.remove{
+  margin-left:8px;
+  background:#ff4d4d;
+  border:none;
+  color:white;
+  width:28px;
+  height:28px;
   border-radius:6px;
   cursor:pointer;
 }
@@ -105,7 +120,6 @@ textarea{
   margin-top:10px;
 }
 
-/* WHATSAPP */
 .whatsapp-btn{
   width:100%;
   margin-top:12px;
@@ -118,10 +132,10 @@ textarea{
   cursor:pointer;
 }
 
+/* EMPTY */
 .empty{
   text-align:center;
   padding:60px 20px;
-  color:#666;
 }
 </style>
 </head>
@@ -138,43 +152,55 @@ textarea{
 
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-/* 🔥 FIX: group same items */
-function groupCart(){
-
-  let grouped = [];
-
-  cart.forEach(item=>{
-
-    let found = grouped.find(p=>p.id === item.id);
-
-    if(found){
-      found.qty += 1;
-    } else {
-      grouped.push({...item, qty:1});
-    }
-  });
-
-  return grouped;
+/* ensure qty */
+function normalize(){
+  cart = cart.map(i => ({...i, qty: i.qty ? i.qty : 1}));
 }
 
-function save(cartData){
-  localStorage.setItem("cart", JSON.stringify(cartData));
+/* SAVE */
+function save(){
+  localStorage.setItem("cart", JSON.stringify(cart));
+}
+
+/* INCREASE */
+function increase(i){
+  cart[i].qty++;
+  save();
+  render();
+}
+
+/* DECREASE */
+function decrease(i){
+  cart[i].qty--;
+  if(cart[i].qty <= 0){
+    cart.splice(i,1);
+  }
+  save();
+  render();
+}
+
+/* REMOVE */
+function removeItem(i){
+  cart.splice(i,1);
+  save();
+  render();
 }
 
 /* RENDER */
 function render(){
 
-  let container = document.getElementById("cartContainer");
-  let grouped = groupCart();
+  normalize();
 
-  if(grouped.length === 0){
+  let container = document.getElementById("cartContainer");
+
+  if(cart.length === 0){
     container.innerHTML = `<div class="empty"><h2>Your cart is empty</h2></div>`;
     return;
   }
 
   container.innerHTML = "";
 
-  grouped.forEach((item)=>{
+  cart.forEach((item,index)=>{
 
     container.innerHTML += `
       <div class="item">
@@ -183,21 +209,30 @@ function render(){
         <div class="details">
           <h3>${item.name}</h3>
           <div class="price">₹${item.price}</div>
-          <div>Qty: ${item.qty}</div>
         </div>
+
+        <div class="qty">
+          <button onclick="decrease(${index})">-</button>
+          <span>${item.qty}</span>
+          <button onclick="increase(${index})">+</button>
+        </div>
+
+        <button class="remove" onclick="removeItem(${index})">
+          <i class="fa fa-trash"></i>
+        </button>
       </div>
     `;
   });
 
-  updateSummary(grouped);
+  updateSummary();
 }
 
-/* TOTAL + WHATSAPP */
-function updateSummary(items){
+/* SUMMARY */
+function updateSummary(){
 
   let total = 0;
 
-  items.forEach(i=>{
+  cart.forEach(i=>{
     total += i.price * i.qty;
   });
 
@@ -213,7 +248,7 @@ function updateSummary(items){
 
     <textarea id="address" placeholder="Enter address (optional)"></textarea>
 
-    <button class="whatsapp-btn" onclick="sendWhatsApp(${total}, ${JSON.stringify(items).replace(/"/g,'&quot;')})">
+    <button class="whatsapp-btn" onclick="sendWhatsApp(${total})">
       Order on WhatsApp
     </button>
   `;
@@ -221,8 +256,8 @@ function updateSummary(items){
   document.getElementById("cartContainer").appendChild(div);
 }
 
-/* WHATSAPP ORDER */
-function sendWhatsApp(total, items){
+/* WHATSAPP */
+function sendWhatsApp(total){
 
   let number = "91XXXXXXXXXX"; // replace
 
@@ -230,7 +265,7 @@ function sendWhatsApp(total, items){
 
   let msg = "🛒 *Balaji Mega Mart Order*%0A%0A";
 
-  items.forEach(i=>{
+  cart.forEach(i=>{
     msg += `• ${i.name} x${i.qty} = ₹${i.price * i.qty}%0A`;
   });
 
