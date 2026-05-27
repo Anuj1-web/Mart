@@ -25,10 +25,12 @@ body{
 /* NAVBAR */
 nav{
   background:#ffffff;
-  padding:16px 6%;
+  padding:14px 5%;
   display:flex;
-  justify-content:space-between;
   align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
   position:sticky;
   top:0;
   z-index:1000;
@@ -36,195 +38,175 @@ nav{
 }
 
 .logo{
-  font-size:26px;
+  font-size:22px;
   font-weight:700;
   color:#0f2d4a;
+  flex:1;
 }
 
 .logo span{
   color:#00a884;
 }
 
+/* SEARCH */
 .search-box{
-  width:40%;
+  flex:2;
   position:relative;
+  min-width:180px;
 }
 
 .search-box input{
   width:100%;
-  padding:12px 45px 12px 18px;
-  border-radius:30px;
+  padding:10px 40px 10px 15px;
+  border-radius:25px;
   border:1px solid #e5e7eb;
   outline:none;
   background:#f9fafb;
-  font-size:15px;
+  font-size:14px;
 }
 
 .search-box i{
   position:absolute;
-  right:15px;
-  top:12px;
+  right:12px;
+  top:10px;
   color:#777;
+}
+
+/* ADMIN BUTTON */
+.admin-btn{
+  background:#0f2d4a;
+  color:white;
+  padding:10px 14px;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+  font-size:13px;
 }
 
 /* HERO */
 .hero{
   width:90%;
-  margin:30px auto;
+  margin:25px auto;
   background:linear-gradient(135deg,#0f2d4a,#1f4e79);
   border-radius:18px;
-  padding:60px;
+  padding:50px;
   display:flex;
   justify-content:space-between;
   align-items:center;
   color:white;
-  overflow:hidden;
   position:relative;
+  overflow:hidden;
+  transition:0.3s;
 }
 
-.hero::after{
-  content:"";
-  position:absolute;
-  width:300px;
-  height:300px;
-  background:rgba(255,255,255,0.08);
-  border-radius:50%;
-  top:-100px;
-  right:-80px;
-}
-
-.hero-text{
-  max-width:500px;
-  z-index:2;
+.hero.hide{
+  display:none;
 }
 
 .hero-text h1{
-  font-size:44px;
-  margin-bottom:15px;
+  font-size:40px;
+  margin-bottom:10px;
 }
 
 .hero-text p{
   color:#dbe7f3;
-  margin-bottom:20px;
-  line-height:1.6;
-}
-
-.hero-btn{
-  padding:12px 25px;
-  border:none;
-  border-radius:25px;
-  background:#ff8c42;
-  color:white;
-  font-weight:600;
-  cursor:pointer;
-  transition:0.3s;
-}
-
-.hero-btn:hover{
-  transform:scale(1.05);
 }
 
 .hero img{
-  width:320px;
-  z-index:2;
+  width:280px;
 }
 
-/* SECTION TITLE */
+/* TITLE */
 .section-title{
   width:90%;
-  margin:30px auto 15px;
-  font-size:26px;
+  margin:25px auto 10px;
+  font-size:22px;
   font-weight:600;
   color:#0f2d4a;
 }
 
-/* PRODUCTS */
+/* PRODUCTS GRID (DEFAULT DESKTOP 5 COL) */
 .products{
   width:90%;
   margin:auto;
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:20px;
+  grid-template-columns:repeat(5,1fr);
+  gap:18px;
   padding-bottom:60px;
 }
 
+/* CARD FIXED */
 .card{
   background:white;
-  border-radius:14px;
+  border-radius:12px;
   overflow:hidden;
-  box-shadow:0 5px 15px rgba(0,0,0,0.06);
-  transition:0.3s;
+  box-shadow:0 5px 12px rgba(0,0,0,0.06);
+  transition:0.2s;
 }
 
 .card:hover{
-  transform:translateY(-5px);
+  transform:translateY(-3px);
 }
 
 .card img{
   width:100%;
-  height:200px;
+  height:140px;
   object-fit:cover;
 }
 
 .card-content{
-  padding:15px;
+  padding:10px;
 }
 
 .card-content h3{
-  font-size:18px;
-  margin-bottom:8px;
+  font-size:14px;
+  margin-bottom:5px;
 }
 
 .price{
   color:#00a884;
   font-weight:600;
-  font-size:18px;
-  margin-bottom:10px;
+  font-size:14px;
+  margin-bottom:8px;
 }
 
 .add-btn{
   width:100%;
-  padding:10px;
+  padding:8px;
   border:none;
-  border-radius:8px;
+  border-radius:6px;
   background:#0f2d4a;
   color:white;
+  font-size:12px;
   cursor:pointer;
-  transition:0.3s;
-}
-
-.add-btn:hover{
-  background:#1f4e79;
 }
 
 /* CART */
 .cart-icon{
   position:fixed;
-  bottom:25px;
-  right:25px;
-  width:65px;
-  height:65px;
+  bottom:20px;
+  right:20px;
+  width:60px;
+  height:60px;
   background:#ff8c42;
   border-radius:50%;
   display:flex;
   justify-content:center;
   align-items:center;
   color:white;
-  font-size:24px;
-  cursor:pointer;
-  box-shadow:0 10px 25px rgba(255,140,66,0.4);
+  font-size:20px;
 }
 
 .cart-count{
   position:absolute;
-  top:-3px;
-  right:-3px;
+  top:-4px;
+  right:-4px;
   background:#0f2d4a;
   color:white;
-  width:22px;
-  height:22px;
+  width:20px;
+  height:20px;
   border-radius:50%;
-  font-size:12px;
+  font-size:11px;
   display:flex;
   justify-content:center;
   align-items:center;
@@ -233,41 +215,85 @@ nav{
 /* FOOTER */
 footer{
   text-align:center;
-  padding:40px;
+  padding:30px;
   background:#0f2d4a;
   color:white;
 }
 
-footer p{
-  color:#cbd5e1;
+/* =========================
+   RESPONSIVE BREAKPOINTS
+========================= */
+
+/* tablet */
+@media(max-width:1024px){
+  .products{
+    grid-template-columns:repeat(3,1fr);
+  }
 }
 
-/* MOBILE */
-@media(max-width:768px){
+/* MOBILE = 3 COLUMNS (AS YOU WANTED) */
+@media(max-width:600px){
+
   nav{
     flex-direction:column;
-    gap:10px;
+    align-items:stretch;
+  }
+
+  .logo{
+    text-align:center;
   }
 
   .search-box{
     width:100%;
   }
 
+  .admin-btn{
+    width:100%;
+  }
+
   .hero{
     flex-direction:column;
     text-align:center;
-    padding:40px 25px;
+    padding:35px 20px;
   }
 
   .hero img{
-    width:220px;
-    margin-top:20px;
+    width:180px;
+    margin-top:15px;
   }
 
   .hero-text h1{
-    font-size:32px;
+    font-size:26px;
+  }
+
+  /* 🔥 MOBILE 3 COLUMNS */
+  .products{
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+  }
+
+  .card img{
+    height:85px;
+  }
+
+  .card-content{
+    padding:8px;
+  }
+
+  .card-content h3{
+    font-size:11px;
+  }
+
+  .price{
+    font-size:12px;
+  }
+
+  .add-btn{
+    font-size:10px;
+    padding:6px;
   }
 }
+
 </style>
 </head>
 
@@ -277,16 +303,17 @@ footer p{
   <div class="logo">Balaji <span>Mega Mart</span></div>
 
   <div class="search-box">
-    <input type="text" id="searchInput" placeholder="Search groceries, snacks...">
+    <input type="text" id="searchInput" placeholder="Search groceries...">
     <i class="fa fa-search"></i>
   </div>
+
+  <button class="admin-btn" onclick="goAdmin()">Admin Login</button>
 </nav>
 
-<section class="hero">
+<section class="hero" id="hero">
   <div class="hero-text">
     <h1>Fresh Groceries Delivered Fast</h1>
-    <p>Order daily essentials at best prices with fast and reliable service.</p>
-    <button class="hero-btn">Shop Now</button>
+    <p>Order daily essentials at best prices.</p>
   </div>
   <img src="https://cdn-icons-png.flaticon.com/512/3081/3081559.png">
 </section>
@@ -319,6 +346,7 @@ const products = [
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
 const container = document.getElementById("productContainer");
+const hero = document.getElementById("hero");
 
 function display(items){
   container.innerHTML="";
@@ -329,7 +357,7 @@ function display(items){
       <div class="card-content">
         <h3>${p.name}</h3>
         <div class="price">₹${p.price}</div>
-        <button class="add-btn" onclick="addToCart(${p.id})">Add To Cart</button>
+        <button class="add-btn" onclick="addToCart(${p.id})">Add</button>
       </div>
     </div>`;
   });
@@ -354,10 +382,23 @@ function goToCart(){
   window.location.href="carts.html";
 }
 
+function goAdmin(){
+  window.location.href="login.html";
+}
+
+/* SEARCH + HERO HIDE */
 document.getElementById("searchInput").addEventListener("input",function(){
+
   let val=this.value.toLowerCase();
   let filtered=products.filter(p=>p.name.toLowerCase().includes(val));
+
   display(filtered);
+
+  if(val.length>0){
+    hero.classList.add("hide");
+  }else{
+    hero.classList.remove("hide");
+  }
 });
 
 </script>
