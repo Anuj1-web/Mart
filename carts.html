@@ -207,19 +207,7 @@ textarea{
 
 <script>
 
-/* 🔥 FIX ONLY: MERGE DUPLICATES INTO QUANTITY */
-let rawCart = JSON.parse(localStorage.getItem("cart")) || [];
-let cart = [];
-
-rawCart.forEach(item => {
-  let existing = cart.find(p => p.id === item.id);
-
-  if(existing){
-    existing.qty = (existing.qty || 1) + 1;
-  } else {
-    cart.push({...item, qty: item.qty ? item.qty : 1});
-  }
-});
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
 function renderCart(){
 
@@ -321,7 +309,7 @@ function updateTotal(){
 
 function sendWhatsApp(total){
 
-  let number = "91XXXXXXXXXX";
+  let number = "91XXXXXXXXXX"; // 🔴 REPLACE WITH YOUR NUMBER
 
   let address = document.getElementById("address").value;
 
