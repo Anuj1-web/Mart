@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
+<meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <meta name="theme-color" content="#0f172a"/>
 
@@ -16,14 +16,11 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 
 <style>
 
-/* ================= ROOT ================= */
-
 :root{
   --bg:#07111f;
   --bg2:#0d1b2d;
+
   --card:rgba(255,255,255,0.07);
-  --glass:rgba(255,255,255,0.08);
-  --line:rgba(255,255,255,0.08);
 
   --text:#f4f7ff;
   --muted:#9ba8c7;
@@ -35,11 +32,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
   --green:#38d39f;
 
   --shadow:0 15px 35px rgba(0,0,0,0.35);
-
-  --radius:22px;
 }
-
-/* ================= GLOBAL ================= */
 
 *{
   margin:0;
@@ -47,10 +40,6 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
   box-sizing:border-box;
   font-family:'Inter',sans-serif;
   -webkit-tap-highlight-color:transparent;
-}
-
-html{
-  scroll-behavior:smooth;
 }
 
 body{
@@ -61,32 +50,6 @@ body{
 
   color:var(--text);
   overflow-x:hidden;
-
-  animation:fadePage .5s ease;
-}
-
-@keyframes fadePage{
-  from{
-    opacity:0;
-    transform:translateY(10px);
-  }
-  to{
-    opacity:1;
-    transform:none;
-  }
-}
-
-/* ================= PAGE EXIT ================= */
-
-.page-exit{
-  animation:pageOut .18s ease forwards;
-}
-
-@keyframes pageOut{
-  to{
-    opacity:0;
-    transform:scale(.98);
-  }
 }
 
 /* ================= NAVBAR ================= */
@@ -95,22 +58,24 @@ nav{
   position:sticky;
   top:0;
   z-index:999;
+
   padding:14px 5%;
+
   display:flex;
   align-items:center;
   justify-content:space-between;
   gap:14px;
 
-  background:rgba(7,17,31,0.7);
+  background:rgba(7,17,31,.7);
+
   backdrop-filter:blur(18px);
 
-  border-bottom:1px solid var(--line);
+  border-bottom:1px solid rgba(255,255,255,.08);
 }
 
 .logo{
   font-size:22px;
   font-weight:800;
-  letter-spacing:.5px;
 }
 
 .logo span{
@@ -126,6 +91,7 @@ nav{
 
 .search-box input{
   width:100%;
+
   border:none;
   outline:none;
 
@@ -133,21 +99,11 @@ nav{
 
   border-radius:40px;
 
-  background:rgba(255,255,255,0.06);
+  background:rgba(255,255,255,.06);
 
-  color:var(--text);
+  color:white;
 
-  border:1px solid rgba(255,255,255,0.08);
-
-  transition:.3s;
-}
-
-.search-box input:focus{
-  border-color:rgba(247,200,115,.5);
-
-  box-shadow:
-  0 0 0 5px rgba(247,200,115,.08),
-  0 10px 25px rgba(0,0,0,.2);
+  border:1px solid rgba(255,255,255,.08);
 }
 
 .search-box i{
@@ -159,7 +115,9 @@ nav{
 
 .admin-btn{
   border:none;
+
   padding:12px 18px;
+
   border-radius:16px;
 
   background:
@@ -170,15 +128,6 @@ nav{
   font-weight:700;
 
   cursor:pointer;
-
-  transition:.25s;
-
-  box-shadow:
-  0 10px 25px rgba(124,58,237,.25);
-}
-
-.admin-btn:hover{
-  transform:translateY(-2px);
 }
 
 /* ================= HERO ================= */
@@ -209,60 +158,23 @@ nav{
   justify-content:space-between;
 
   padding:34px;
+
+  transition:.35s;
 }
 
-.hero::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:
-  linear-gradient(120deg,
-  transparent,
-  rgba(255,255,255,.08),
-  transparent);
-
-  transform:translateX(-100%);
-  animation:shine 5s infinite;
-}
-
-@keyframes shine{
-  100%{
-    transform:translateX(200%);
-  }
-}
-
-.hero-text{
-  z-index:2;
+.hero.hide{
+  display:none;
 }
 
 .hero h1{
   font-size:38px;
   line-height:1.2;
-  margin-bottom:10px;
 }
 
 .hero p{
   color:var(--muted);
+  margin-top:12px;
   max-width:500px;
-  line-height:1.7;
-}
-
-.hero-badge{
-  display:inline-block;
-
-  margin-bottom:18px;
-
-  background:rgba(255,255,255,.08);
-
-  padding:8px 14px;
-
-  border-radius:40px;
-
-  border:1px solid rgba(255,255,255,.08);
-
-  font-size:13px;
-
-  color:#fff;
 }
 
 .hero-buttons{
@@ -277,7 +189,6 @@ nav{
   border-radius:14px;
   cursor:pointer;
   font-weight:700;
-  transition:.25s;
 }
 
 .hero-btn.primary{
@@ -286,43 +197,52 @@ nav{
 }
 
 .hero-btn.secondary{
-  background:rgba(255,255,255,.07);
+  background:rgba(255,255,255,.08);
   color:white;
-  border:1px solid rgba(255,255,255,.08);
-}
-
-.hero-btn:hover{
-  transform:translateY(-2px);
 }
 
 .hero img{
-  width:280px;
-  z-index:2;
-
-  filter:drop-shadow(0 25px 40px rgba(0,0,0,.35));
-
-  animation:float 4s ease-in-out infinite;
+  width:260px;
 }
 
-@keyframes float{
-  50%{
-    transform:translateY(-10px);
-  }
-}
+/* ================= FILTER BAR ================= */
 
-/* ================= SECTION TITLE ================= */
-
-.section-title{
+.section-bar{
   width:92%;
-  margin:22px auto 16px;
+  margin:22px auto 18px;
 
   display:flex;
-  align-items:center;
   justify-content:space-between;
+  align-items:center;
+  gap:14px;
 }
 
-.section-title h2{
+.section-title{
   font-size:24px;
+  font-weight:700;
+}
+
+.filter-area{
+  display:flex;
+  gap:12px;
+}
+
+.filter-area select{
+  background:rgba(255,255,255,.07);
+
+  color:white;
+
+  border:1px solid rgba(255,255,255,.08);
+
+  padding:12px 14px;
+
+  border-radius:14px;
+
+  outline:none;
+}
+
+.filter-area option{
+  background:#111827;
 }
 
 /* ================= PRODUCTS ================= */
@@ -342,8 +262,6 @@ nav{
 /* ================= CARD ================= */
 
 .card{
-  position:relative;
-
   overflow:hidden;
 
   border-radius:24px;
@@ -360,28 +278,17 @@ nav{
 }
 
 .card:hover{
-  transform:
-  translateY(-8px)
-  scale(1.01);
-
-  border-color:rgba(247,200,115,.3);
+  transform:translateY(-6px);
 }
 
 .card-top{
   position:relative;
-  overflow:hidden;
 }
 
 .card img{
   width:100%;
   height:180px;
   object-fit:cover;
-
-  transition:.5s;
-}
-
-.card:hover img{
-  transform:scale(1.08);
 }
 
 .discount{
@@ -416,8 +323,6 @@ nav{
   background:rgba(255,255,255,.08);
 
   color:white;
-
-  cursor:pointer;
 }
 
 .card-content{
@@ -427,12 +332,11 @@ nav{
 .category{
   color:var(--gold);
   font-size:12px;
-  margin-bottom:6px;
 }
 
 .card-content h3{
+  margin-top:6px;
   font-size:15px;
-  line-height:1.5;
   min-height:44px;
 }
 
@@ -450,23 +354,19 @@ nav{
 
 .price-row{
   display:flex;
-  align-items:center;
   justify-content:space-between;
-
   margin:14px 0;
 }
 
 .price{
   font-size:22px;
   font-weight:800;
-
   color:var(--green);
 }
 
 .old-price{
   color:var(--muted);
   text-decoration:line-through;
-  font-size:13px;
 }
 
 /* ================= BUTTON ================= */
@@ -487,17 +387,7 @@ nav{
   color:white;
 
   background:
-  linear-gradient(135deg,
-  var(--primary),
-  #2563eb);
-
-  transition:.25s;
-}
-
-.add-btn:hover{
-  transform:translateY(-2px);
-  box-shadow:
-  0 10px 25px rgba(124,58,237,.3);
+  linear-gradient(135deg,var(--primary),#2563eb);
 }
 
 /* ================= QTY ================= */
@@ -507,11 +397,7 @@ nav{
   align-items:center;
   justify-content:space-between;
 
-  gap:10px;
-
   background:rgba(255,255,255,.05);
-
-  border:1px solid rgba(255,255,255,.08);
 
   padding:6px;
 
@@ -533,12 +419,6 @@ nav{
 
   color:#111827;
 
-  font-size:18px;
-  font-weight:700;
-}
-
-.qty-box span{
-  font-size:16px;
   font-weight:700;
 }
 
@@ -639,13 +519,16 @@ nav{
 
   .bottom-nav{
     width:420px;
+
     left:50%;
+
     transform:translateX(-50%);
+
     bottom:20px;
+
     border-radius:24px;
+
     border:1px solid rgba(255,255,255,.08);
-    box-shadow:
-    0 15px 35px rgba(0,0,0,.35);
   }
 
 }
@@ -658,10 +541,6 @@ footer{
   padding:40px 20px 120px;
 
   color:var(--muted);
-
-  border-top:1px solid rgba(255,255,255,.08);
-
-  background:rgba(255,255,255,.02);
 }
 
 /* ================= RESPONSIVE ================= */
@@ -673,6 +552,7 @@ footer{
 }
 
 @media(max-width:900px){
+
   .products{
     grid-template-columns:repeat(3,1fr);
   }
@@ -680,12 +560,12 @@ footer{
   .hero{
     flex-direction:column;
     text-align:center;
-    gap:30px;
   }
 
-  .hero-buttons{
-    justify-content:center;
+  .hero img{
+    margin-top:20px;
   }
+
 }
 
 @media(max-width:600px){
@@ -704,16 +584,51 @@ footer{
   }
 
   .hero img{
-    width:200px;
+    width:180px;
   }
 
+  /* 3 ITEMS ROW IN MOBILE */
+
   .products{
-    grid-template-columns:repeat(2,1fr);
-    gap:14px;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
   }
 
   .card img{
-    height:140px;
+    height:100px;
+  }
+
+  .card-content{
+    padding:10px;
+  }
+
+  .card-content h3{
+    font-size:12px;
+    min-height:auto;
+  }
+
+  .price{
+    font-size:16px;
+  }
+
+  .old-price{
+    font-size:11px;
+  }
+
+  .discount{
+    font-size:10px;
+    padding:4px 8px;
+  }
+
+  .favorite{
+    width:28px;
+    height:28px;
+    font-size:12px;
+  }
+
+  .add-btn{
+    font-size:11px;
+    padding:10px;
   }
 
 }
@@ -732,12 +647,15 @@ footer{
   </div>
 
   <div class="search-box">
+
     <input
-      type="text"
-      id="searchInput"
-      placeholder="Search groceries, fruits, snacks..."
+    type="text"
+    id="searchInput"
+    placeholder="Search groceries, fruits, snacks..."
     >
+
     <i class="fa fa-search"></i>
+
   </div>
 
   <button class="admin-btn" onclick="goAdmin()">
@@ -750,11 +668,7 @@ footer{
 
 <section class="hero" id="hero">
 
-  <div class="hero-text">
-
-    <div class="hero-badge">
-      ⚡ Fast Delivery • Premium Grocery Experience
-    </div>
+  <div>
 
     <h1>
       Fresh Groceries
@@ -764,17 +678,23 @@ footer{
 
     <p>
       Discover premium quality groceries,
-      organic fruits, dairy products,
-      snacks and essentials with ultra-fast delivery.
+      fruits, snacks and essentials.
     </p>
 
     <div class="hero-buttons">
 
-      <button class="hero-btn primary">
+      <!-- SHOP NOW -->
+
+      <button class="hero-btn primary" onclick="hideHero()">
         Shop Now
       </button>
 
-      <button class="hero-btn secondary">
+      <!-- EXPLORE OFFERS -->
+
+      <button
+      class="hero-btn secondary"
+      onclick="window.location.href='offers.html'"
+      >
         Explore Offers
       </button>
 
@@ -786,10 +706,54 @@ footer{
 
 </section>
 
-<!-- ================= SECTION TITLE ================= -->
+<!-- ================= FILTER BAR ================= -->
 
-<div class="section-title">
-  <h2>Trending Products</h2>
+<div class="section-bar">
+
+  <div class="section-title">
+    Categories
+  </div>
+
+  <div class="filter-area">
+
+    <!-- CATEGORY FILTER -->
+
+    <select id="categoryFilter">
+
+      <option value="all">
+        All Categories
+      </option>
+
+    </select>
+
+    <!-- DISCOUNT FILTER -->
+
+    <select id="discountFilter">
+
+      <option value="all">
+        All Offers
+      </option>
+
+      <option value="10">
+        10%+ OFF
+      </option>
+
+      <option value="20">
+        20%+ OFF
+      </option>
+
+      <option value="30">
+        30%+ OFF
+      </option>
+
+      <option value="40">
+        40%+ OFF
+      </option>
+
+    </select>
+
+  </div>
+
 </div>
 
 <!-- ================= PRODUCTS ================= -->
@@ -814,24 +778,44 @@ footer{
 
   <ul>
 
-    <li>
+    <!-- HOME -->
+
+    <li onclick="window.location.href='index.html'">
+
       <i class="fa fa-house"></i>
+
       Home
+
     </li>
 
-    <li>
+    <!-- CATEGORY -->
+
+    <li onclick="window.location.href='categories.html'">
+
       <i class="fa fa-layer-group"></i>
+
       Categories
+
     </li>
 
-    <li onclick="goToCart()">
+    <!-- CART -->
+
+    <li onclick="window.location.href='carts.html'">
+
       <i class="fa fa-cart-shopping"></i>
+
       Cart
+
     </li>
 
-    <li>
+    <!-- PROFILE -->
+
+    <li onclick="window.location.href='profile.html'">
+
       <i class="fa fa-user"></i>
+
       Profile
+
     </li>
 
   </ul>
@@ -867,6 +851,88 @@ document.getElementById("productContainer");
 
 const hero =
 document.getElementById("hero");
+
+/* ================= HERO HIDE ================= */
+
+function hideHero(){
+
+  hero.classList.add("hide");
+
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
+}
+
+/* ================= CATEGORY LIST ================= */
+
+function loadCategories(){
+
+  let categories =
+  [...new Set(products.map(p => p.category))];
+
+  let select =
+  document.getElementById("categoryFilter");
+
+  categories.forEach(cat => {
+
+    select.innerHTML +=
+    `
+    <option value="${cat}">
+      ${cat}
+    </option>
+    `;
+  });
+}
+
+/* ================= FILTER PRODUCTS ================= */
+
+function applyFilters(){
+
+  let category =
+  document.getElementById("categoryFilter").value;
+
+  let discount =
+  document.getElementById("discountFilter").value;
+
+  let filtered = [...products];
+
+  /* CATEGORY FILTER */
+
+  if(category !== "all"){
+
+    filtered =
+    filtered.filter(
+      p => p.category === category
+    );
+  }
+
+  /* DISCOUNT FILTER */
+
+  if(discount !== "all"){
+
+    filtered =
+    filtered.filter(p => {
+
+      let off =
+      ((p.mrp - p.price) / p.mrp) * 100;
+
+      return off >= discount;
+    });
+  }
+
+  display(filtered);
+}
+
+/* ================= EVENTS ================= */
+
+document
+.getElementById("categoryFilter")
+.addEventListener("change", applyFilters);
+
+document
+.getElementById("discountFilter")
+.addEventListener("change", applyFilters);
 
 /* ================= FUNCTIONS ================= */
 
@@ -1092,20 +1158,12 @@ function updateCart(){
 
 function goToCart(){
 
-  document.body.classList.add("page-exit");
-
-  setTimeout(()=>{
-    window.location.href = "carts.html";
-  },180);
+  window.location.href = "carts.html";
 }
 
 function goAdmin(){
 
-  document.body.classList.add("page-exit");
-
-  setTimeout(()=>{
-    window.location.href = "login.html";
-  },180);
+  window.location.href = "login.html";
 }
 
 /* ================= SEARCH ================= */
@@ -1124,28 +1182,15 @@ document
 
   display(filtered);
 
-  if(val.length > 0){
-
-    hero.style.display = "none";
-
-  }else{
-
-    hero.style.display = "flex";
-  }
-});
-
-/* ================= FIX MOBILE BACK SWIPE ================= */
-
-window.addEventListener("pageshow", function () {
-
-  document.body.classList.remove("page-exit");
-
 });
 
 /* ================= INIT ================= */
 
 updateCart();
+
 display(products);
+
+loadCategories();
 
 </script>
 
