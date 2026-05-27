@@ -61,11 +61,7 @@ body{
 
   color:var(--text);
   overflow-x:hidden;
-}
 
-/* smooth page animation */
-
-body{
   animation:fadePage .5s ease;
 }
 
@@ -77,6 +73,19 @@ body{
   to{
     opacity:1;
     transform:none;
+  }
+}
+
+/* ================= PAGE EXIT ================= */
+
+.page-exit{
+  animation:pageOut .18s ease forwards;
+}
+
+@keyframes pageOut{
+  to{
+    opacity:0;
+    transform:scale(.98);
   }
 }
 
@@ -170,10 +179,6 @@ nav{
 
 .admin-btn:hover{
   transform:translateY(-2px);
-}
-
-.admin-btn:active{
-  transform:scale(.95);
 }
 
 /* ================= HERO ================= */
@@ -362,19 +367,6 @@ nav{
   border-color:rgba(247,200,115,.3);
 }
 
-.card::before{
-  content:"";
-  position:absolute;
-  inset:0;
-
-  background:
-  linear-gradient(180deg,
-  transparent,
-  rgba(255,255,255,.02));
-
-  pointer-events:none;
-}
-
 .card-top{
   position:relative;
   overflow:hidden;
@@ -405,8 +397,6 @@ nav{
 
   font-size:12px;
   font-weight:700;
-
-  box-shadow:0 10px 20px rgba(255,77,109,.25);
 }
 
 .favorite{
@@ -424,8 +414,6 @@ nav{
   justify-content:center;
 
   background:rgba(255,255,255,.08);
-
-  backdrop-filter:blur(10px);
 
   color:white;
 
@@ -512,10 +500,6 @@ nav{
   0 10px 25px rgba(124,58,237,.3);
 }
 
-.add-btn:active{
-  transform:scale(.96);
-}
-
 /* ================= QTY ================= */
 
 .qty-box{
@@ -563,7 +547,7 @@ nav{
 .cart-icon{
   position:fixed;
 
-  bottom:20px;
+  bottom:90px;
   right:20px;
 
   width:68px;
@@ -621,8 +605,6 @@ nav{
   left:0;
   width:100%;
 
-  display:none;
-
   padding:12px 0;
 
   background:rgba(7,17,31,.9);
@@ -644,6 +626,7 @@ nav{
   color:var(--muted);
   font-size:12px;
   text-align:center;
+  cursor:pointer;
 }
 
 .bottom-nav i{
@@ -652,12 +635,27 @@ nav{
   margin-bottom:4px;
 }
 
+@media(min-width:700px){
+
+  .bottom-nav{
+    width:420px;
+    left:50%;
+    transform:translateX(-50%);
+    bottom:20px;
+    border-radius:24px;
+    border:1px solid rgba(255,255,255,.08);
+    box-shadow:
+    0 15px 35px rgba(0,0,0,.35);
+  }
+
+}
+
 /* ================= FOOTER ================= */
 
 footer{
   text-align:center;
 
-  padding:40px 20px;
+  padding:40px 20px 120px;
 
   color:var(--muted);
 
@@ -718,17 +716,6 @@ footer{
     height:140px;
   }
 
-  .bottom-nav{
-    display:block;
-  }
-
-  .cart-icon{
-    bottom:78px;
-  }
-
-  footer{
-    padding-bottom:90px;
-  }
 }
 
 </style>
@@ -821,7 +808,7 @@ footer{
 
 </div>
 
-<!-- ================= MOBILE NAV ================= -->
+<!-- ================= BOTTOM NAV ================= -->
 
 <div class="bottom-nav">
 
@@ -992,6 +979,11 @@ function display(items){
 
     let qty = getQty(p.id);
 
+    let discount =
+    Math.round(
+      ((p.mrp - p.price) / p.mrp) * 100
+    );
+
     container.innerHTML += `
 
     <div class="card">
@@ -1001,7 +993,7 @@ function display(items){
         <img src="${p.image}">
 
         <div class="discount">
-          20% OFF
+          ${discount}% OFF
         </div>
 
         <div class="favorite">
@@ -1013,7 +1005,7 @@ function display(items){
       <div class="card-content">
 
         <div class="category">
-          Grocery
+          ${p.category}
         </div>
 
         <h3>
@@ -1025,7 +1017,7 @@ function display(items){
           <i class="fa fa-star"></i>
 
           <span>
-            4.8 Rating
+            ${p.rating} Rating
           </span>
 
         </div>
@@ -1037,7 +1029,7 @@ function display(items){
           </div>
 
           <div class="old-price">
-            ₹${Math.floor(p.price * 1.2)}
+            ₹${p.mrp}
           </div>
 
         </div>
@@ -1100,20 +1092,20 @@ function updateCart(){
 
 function goToCart(){
 
-  document.body.style.opacity = ".4";
+  document.body.classList.add("page-exit");
 
   setTimeout(()=>{
     window.location.href = "carts.html";
-  },200);
+  },180);
 }
 
 function goAdmin(){
 
-  document.body.style.opacity = ".4";
+  document.body.classList.add("page-exit");
 
   setTimeout(()=>{
     window.location.href = "login.html";
-  },200);
+  },180);
 }
 
 /* ================= SEARCH ================= */
@@ -1140,6 +1132,14 @@ document
 
     hero.style.display = "flex";
   }
+});
+
+/* ================= FIX MOBILE BACK SWIPE ================= */
+
+window.addEventListener("pageshow", function () {
+
+  document.body.classList.remove("page-exit");
+
 });
 
 /* ================= INIT ================= */
