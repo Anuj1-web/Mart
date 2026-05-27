@@ -87,13 +87,9 @@ nav{
   transition:0.3s;
 }
 
-.hero.hide{
-  display:none;
-}
+.hero.hide{ display:none; }
 
-.hero img{
-  width:250px;
-}
+.hero img{ width:250px; }
 
 /* PRODUCTS */
 .products{
@@ -133,6 +129,15 @@ nav{
   margin:5px 0;
 }
 
+/* BUTTON AREA */
+.btn-area{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:5px;
+}
+
+/* ADD BUTTON */
 .add-btn{
   width:100%;
   padding:7px;
@@ -141,6 +146,29 @@ nav{
   color:white;
   border-radius:6px;
   font-size:12px;
+  cursor:pointer;
+}
+
+/* QTY CONTROLS */
+.qty-box{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  width:100%;
+}
+
+.qty-box button{
+  width:30px;
+  height:28px;
+  border:none;
+  background:#0f2d4a;
+  color:white;
+  border-radius:6px;
+  cursor:pointer;
+}
+
+.qty-box span{
+  font-weight:600;
 }
 
 /* CART */
@@ -172,71 +200,25 @@ nav{
   font-size:11px;
 }
 
-/* FOOTER */
-footer{
-  text-align:center;
-  padding:30px;
-  background:#0f2d4a;
-  color:white;
-}
-
 /* RESPONSIVE */
-
-/* tablet */
 @media(max-width:1024px){
-  .products{
-    grid-template-columns:repeat(3,1fr);
-  }
+  .products{ grid-template-columns:repeat(3,1fr); }
 }
 
-/* mobile = 3 columns */
 @media(max-width:600px){
+  nav{ flex-direction:column; gap:10px; }
+  .search-box{ width:100%; }
+  .admin-btn{ width:100%; }
 
-  nav{
-    flex-direction:column;
-    gap:10px;
-  }
+  .hero{ flex-direction:column; text-align:center; }
+  .hero img{ width:180px; }
 
-  .search-box{
-    width:100%;
-  }
+  .products{ grid-template-columns:repeat(3,1fr); gap:10px; }
 
-  .admin-btn{
-    width:100%;
-  }
-
-  .hero{
-    flex-direction:column;
-    text-align:center;
-  }
-
-  .hero img{
-    width:180px;
-    margin-top:10px;
-  }
-
-  .products{
-    grid-template-columns:repeat(3,1fr);
-    gap:10px;
-  }
-
-  .card img{
-    height:80px;
-  }
-
-  .card-content h3{
-    font-size:11px;
-  }
-
-  .price{
-    font-size:12px;
-  }
-
-  .add-btn{
-    font-size:10px;
-  }
+  .card img{ height:80px; }
+  .card-content h3{ font-size:11px; }
+  .price{ font-size:12px; }
 }
-
 </style>
 </head>
 
@@ -276,13 +258,61 @@ footer{
 
 <script>
 
-/* 🔥 ONLY ADMIN PRODUCTS */
+/* PRODUCTS FROM ADMIN */
 let products = JSON.parse(localStorage.getItem("products")) || [];
-
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
 const container = document.getElementById("productContainer");
 const hero = document.getElementById("hero");
+
+/* GET QTY */
+function getQty(id){
+  let item = cart.find(p=>p.id===id);
+  return item ? item.qty : 0;
+}
+
+/* ADD */
+function addToCart(id){
+  let item = products.find(p=>p.id===id);
+  let existing = cart.find(p=>p.id===id);
+
+  if(existing){
+    existing.qty++;
+  } else {
+    cart.push({...item, qty:1});
+  }
+
+  localStorage.setItem("cart", JSON.stringify(cart));
+  display(products);
+  updateCart();
+}
+
+/* INCREASE */
+function inc(id){
+  let item = cart.find(p=>p.id===id);
+  if(item){
+    item.qty++;
+    save();
+  }
+}
+
+/* DECREASE */
+function dec(id){
+  let item = cart.find(p=>p.id===id);
+  if(item){
+    item.qty--;
+    if(item.qty <= 0){
+      cart = cart.filter(p=>p.id!==id);
+    }
+    save();
+  }
+}
+
+function save(){
+  localStorage.setItem("cart", JSON.stringify(cart));
+  display(products);
+  updateCart();
+}
 
 /* DISPLAY */
 function display(items){
@@ -294,33 +324,45 @@ function display(items){
   }
 
   items.forEach(p=>{
-    container.innerHTML+=`
+
+    let qty = getQty(p.id);
+
+    container.innerHTML += `
     <div class="card">
       <img src="${p.image}">
       <div class="card-content">
         <h3>${p.name}</h3>
         <div class="price">₹${p.price}</div>
-        <button class="add-btn" onclick="addToCart(${p.id})">Add</button>
+
+        <div class="btn-area">
+          ${
+            qty === 0
+            ? `<button class="add-btn" onclick="addToCart(${p.id})">Add</button>`
+            : `
+              <div class="qty-box">
+                <button onclick="dec(${p.id})">-</button>
+                <span>${qty}</span>
+                <button onclick="inc(${p.id})">+</button>
+              </div>
+            `
+          }
+        </div>
+
       </div>
     </div>`;
   });
 }
 
+/* CART COUNT */
+function updateCart(){
+  let total = cart.reduce((sum,i)=>sum+i.qty,0);
+  document.getElementById("cartCount").innerText = total;
+}
+
+updateCart();
 display(products);
 
-/* CART */
-function addToCart(id){
-  let item = products.find(p=>p.id===id);
-  cart.push(item);
-  localStorage.setItem("cart",JSON.stringify(cart));
-  updateCart();
-}
-
-function updateCart(){
-  document.getElementById("cartCount").innerText = cart.length;
-}
-updateCart();
-
+/* NAV */
 function goToCart(){
   window.location.href="carts.html";
 }
