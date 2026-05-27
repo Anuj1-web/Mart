@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Admin Panel - Balaji Mega Mart</title>
+
+<style>
+body{
+  font-family:Arial;
+  background:#f5f7fb;
+  margin:0;
+}
+
+header{
+  background:#0f2d4a;
+  color:white;
+  padding:15px;
+  text-align:center;
+}
+
+.container{
+  width:90%;
+  margin:20px auto;
+}
+
+.form{
+  background:white;
+  padding:20px;
+  border-radius:10px;
+  box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+input, select{
+  width:100%;
+  padding:10px;
+  margin:10px 0;
+  border:1px solid #ddd;
+  border-radius:6px;
+}
+
+button{
+  padding:10px 15px;
+  border:none;
+  cursor:pointer;
+  border-radius:6px;
+}
+
+.add-btn{
+  background:#0f2d4a;
+  color:white;
+}
+
+.list{
+  margin-top:20px;
+}
+
+.item{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  background:white;
+  padding:10px;
+  margin-bottom:10px;
+  border-radius:8px;
+  box-shadow:0 5px 10px rgba(0,0,0,0.05);
+}
+
+.item img{
+  width:60px;
+  height:60px;
+  object-fit:cover;
+  border-radius:6px;
+}
+
+.actions button{
+  margin-left:5px;
+  background:#ff8c42;
+  color:white;
+}
+
+.delete{
+  background:#ff4d4d !important;
+}
+
+.preview{
+  width:100px;
+  height:100px;
+  object-fit:cover;
+  margin-top:10px;
+  display:none;
+  border-radius:8px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h2>Admin Panel - Balaji Mega Mart</h2>
+</header>
+
+<div class="container">
+
+  <div class="form">
+    <h3>Add Product</h3>
+
+    <input type="text" id="name" placeholder="Product Name"/>
+    <input type="number" id="price" placeholder="Price"/>
+
+    <select id="imageType" onchange="toggleInput()">
+      <option value="url">Image URL</option>
+      <option value="upload">Upload Image</option>
+    </select>
+
+    <input type="text" id="imageUrl" placeholder="Paste Image URL"/>
+    <input type="file" id="imageFile" style="display:none" accept="image/*"/>
+
+    <img id="preview" class="preview"/>
+
+    <button class="add-btn" onclick="addProduct()">Add Product</button>
+  </div>
+
+  <div class="list" id="list"></div>
+
+</div>
+
+<script>
+
+let products = JSON.parse(localStorage.getItem("products")) || [];
+
+// toggle input type
+function toggleInput(){
+  let type = document.getElementById("imageType").value;
+
+  if(type === "upload"){
+    document.getElementById("imageFile").style.display="block";
+    document.getElementById("imageUrl").style.display="none";
+  }else{
+    document.getElementById("imageFile").style.display="none";
+    document.getElementById("imageUrl").style.display="block";
+  }
+}
+
+// preview uploaded image
+document.getElementById("imageFile").addEventListener("change",function(){
+
+  let file = this.files[0];
+
+  if(file){
+    let reader = new FileReader();
+
+    reader.onload = function(e){
+      document.getElementById("preview").src = e.target.result;
+      document.getElementById("preview").style.display="block";
+    }
+
+    reader.readAsDataURL(file);
+  }
+});
+
+// ADD PRODUCT
+function addProduct(){
+
+  let name = document.getElementById("name").value;
+  let price = document.getElementById("price").value;
+  let type = document.getElementById("imageType").value;
+
+  let image = "";
+
+  if(type === "url"){
+    image = document.getElementById("imageUrl").value;
+  }else{
+    image = document.getElementById("preview").src;
+  }
+
+  if(!name || !price || !image){
+    alert("Fill all fields");
+    return;
+  }
+
+  products.push({
+    id:Date.now(),
+    name,
+    price:Number(price),
+    image
+  });
+
+  save();
+  clearForm();
+}
+
+// CLEAR FORM
+function clearForm(){
+  document.getElementById("name").value="";
+  document.getElementById("price").value="";
+  document.getElementById("imageUrl").value="";
+  document.getElementById("imageFile").value="";
+  document.getElementById("preview").style.display="none";
+}
+
+// SAVE
+function save(){
+  localStorage.setItem("products",JSON.stringify(products));
+  render();
+}
+
+// DELETE
+function deleteProduct(id){
+  products = products.filter(p=>p.id!==id);
+  save();
+}
+
+// EDIT
+function editProduct(id){
+
+  let p = products.find(x=>x.id===id);
+
+  let newName = prompt("Edit name",p.name);
+  let newPrice = prompt("Edit price",p.price);
+  let newImage = prompt("Edit image URL",p.image);
+
+  if(newName) p.name = newName;
+  if(newPrice) p.price = Number(newPrice);
+  if(newImage) p.image = newImage;
+
+  save();
+}
+
+// RENDER
+function render(){
+
+  let list = document.getElementById("list");
+  list.innerHTML="";
+
+  products.forEach(p=>{
+    list.innerHTML += `
+      <div class="item">
+        <img src="${p.image}">
+        <div>
+          <b>${p.name}</b><br>
+          ₹${p.price}
+        </div>
+
+        <div class="actions">
+          <button onclick="editProduct(${p.id})">Edit</button>
+          <button class="delete" onclick="deleteProduct(${p.id})">Delete</button>
+        </div>
+      </div>
+    `;
+  });
+}
+
+render();
+
+</script>
+
+</body>
+</html>
