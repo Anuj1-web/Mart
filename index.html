@@ -18,100 +18,125 @@
 }
 
 body{
-  background:#f6f8fb;
+  background:#f4f6fb;
 }
 
-/* NAVBAR */
+/* ================= HEADER (UPGRADED) ================= */
 nav{
-  background:#fff;
-  padding:14px 5%;
+  background:linear-gradient(90deg,#ffffff,#f8fbff);
+  padding:12px 5%;
   display:flex;
   align-items:center;
   justify-content:space-between;
+  gap:10px;
   flex-wrap:wrap;
   position:sticky;
   top:0;
   z-index:1000;
-  box-shadow:0 2px 15px rgba(0,0,0,0.06);
+  box-shadow:0 4px 20px rgba(0,0,0,0.06);
+  border-bottom:1px solid #eef2f7;
 }
 
 .logo{
-  font-size:22px;
+  font-size:20px;
   font-weight:700;
   color:#0f2d4a;
+  letter-spacing:0.3px;
 }
 
-.logo span{ color:#00a884; }
+.logo span{
+  color:#00a884;
+}
 
 .search-box{
-  flex:2;
-  margin:0 10px;
+  flex:1;
+  min-width:180px;
   position:relative;
 }
 
 .search-box input{
   width:100%;
-  padding:10px 40px 10px 15px;
+  padding:10px 40px 10px 14px;
   border-radius:25px;
-  border:1px solid #ddd;
+  border:1px solid #e6eaf0;
   outline:none;
+  background:#fff;
+  transition:0.2s;
+}
+
+.search-box input:focus{
+  border-color:#00a884;
+  box-shadow:0 0 0 3px rgba(0,168,132,0.1);
 }
 
 .search-box i{
   position:absolute;
   right:12px;
-  top:10px;
-  color:#777;
+  top:11px;
+  color:#888;
 }
 
 .admin-btn{
-  background:#0f2d4a;
+  background:linear-gradient(135deg,#0f2d4a,#1f4e79);
   color:white;
   padding:10px 14px;
   border:none;
-  border-radius:8px;
+  border-radius:10px;
   cursor:pointer;
+  font-weight:500;
+  transition:0.2s;
 }
 
-/* HERO */
+.admin-btn:hover{
+  transform:scale(1.03);
+}
+
+/* ================= HERO ================= */
 .hero{
-  width:90%;
-  margin:20px auto;
+  width:92%;
+  margin:18px auto;
   background:linear-gradient(135deg,#0f2d4a,#1f4e79);
-  padding:40px;
-  border-radius:16px;
+  padding:28px;
+  border-radius:18px;
   color:white;
   display:flex;
   justify-content:space-between;
   align-items:center;
-  transition:0.3s;
+  box-shadow:0 10px 25px rgba(0,0,0,0.12);
 }
 
 .hero.hide{ display:none; }
 
-.hero img{ width:250px; }
+.hero img{
+  width:220px;
+}
 
-/* PRODUCTS */
+/* ================= PRODUCTS ================= */
 .products{
-  width:90%;
+  width:92%;
   margin:auto;
   display:grid;
   grid-template-columns:repeat(5,1fr);
-  gap:15px;
-  padding-bottom:60px;
+  gap:12px;
+  padding-bottom:80px;
 }
 
-/* CARD */
+/* CARD (BLINKIT STYLE) */
 .card{
   background:white;
-  border-radius:12px;
+  border-radius:14px;
   overflow:hidden;
-  box-shadow:0 5px 12px rgba(0,0,0,0.06);
+  box-shadow:0 6px 18px rgba(0,0,0,0.06);
+  transition:0.2s;
+}
+
+.card:hover{
+  transform:translateY(-3px);
 }
 
 .card img{
   width:100%;
-  height:120px;
+  height:110px;
   object-fit:cover;
 }
 
@@ -121,44 +146,53 @@ nav{
 
 .card-content h3{
   font-size:13px;
+  font-weight:600;
+  color:#222;
+  line-height:1.2;
 }
 
 .price{
   color:#00a884;
-  font-weight:600;
+  font-weight:700;
   margin:5px 0;
+  font-size:13px;
 }
 
 /* BUTTON AREA */
 .btn-area{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:5px;
+  margin-top:5px;
 }
 
 /* ADD BUTTON */
 .add-btn{
   width:100%;
-  padding:7px;
+  padding:8px;
   border:none;
   background:#0f2d4a;
   color:white;
-  border-radius:6px;
+  border-radius:8px;
   font-size:12px;
   cursor:pointer;
+  transition:0.2s;
 }
 
-/* QTY CONTROLS */
+.add-btn:active{
+  transform:scale(0.96);
+}
+
+/* QTY */
 .qty-box{
   display:flex;
   align-items:center;
   justify-content:space-between;
   width:100%;
+  background:#f2f6ff;
+  border-radius:8px;
+  padding:2px;
 }
 
 .qty-box button{
-  width:30px;
+  width:28px;
   height:28px;
   border:none;
   background:#0f2d4a;
@@ -169,21 +203,23 @@ nav{
 
 .qty-box span{
   font-weight:600;
+  font-size:13px;
 }
 
 /* CART */
 .cart-icon{
   position:fixed;
-  bottom:20px;
-  right:20px;
-  width:60px;
-  height:60px;
+  bottom:18px;
+  right:18px;
+  width:58px;
+  height:58px;
   background:#ff8c42;
   border-radius:50%;
   display:flex;
   justify-content:center;
   align-items:center;
   color:white;
+  box-shadow:0 10px 25px rgba(255,140,66,0.3);
 }
 
 .cart-count{
@@ -200,43 +236,79 @@ nav{
   font-size:11px;
 }
 
-/* RESPONSIVE */
-@media(max-width:1024px){
-  .products{ grid-template-columns:repeat(3,1fr); }
-}
-
-@media(max-width:600px){
-  nav{ flex-direction:column; gap:10px; }
-  .search-box{ width:100%; }
-  .admin-btn{ width:100%; }
-
-  .hero{ flex-direction:column; text-align:center; }
-  .hero img{ width:180px; }
-
-  .products{ grid-template-columns:repeat(3,1fr); gap:10px; }
-
-  .card img{ height:80px; }
-  .card-content h3{ font-size:11px; }
-  .price{ font-size:12px; }
-}
-  footer{
+/* ================= FOOTER ================= */
+footer{
   background:#0f2d4a;
   color:white;
   padding:35px 20px;
   text-align:center;
-  margin-top:40px;
   border-top:3px solid #00a884;
 }
 
-footer h3{
-  font-size:30px;
-  margin-bottom:8px;
-  font-weight:600;
+/* ================= RESPONSIVE ================= */
+
+/* tablet */
+@media(max-width:1024px){
+  .products{ grid-template-columns:repeat(3,1fr); }
 }
 
-footer p{
-  font-size:14px;
-  color:#cbd5e1;
+/* mobile (3 columns optimized) */
+@media(max-width:600px){
+
+  nav{
+    flex-direction:column;
+    align-items:stretch;
+  }
+
+  .search-box{
+    width:100%;
+  }
+
+  .admin-btn{
+    width:100%;
+  }
+
+  .hero{
+    flex-direction:column;
+    text-align:center;
+    padding:20px;
+  }
+
+  .hero img{
+    width:160px;
+    margin-top:10px;
+  }
+
+  .products{
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+  }
+
+  .card img{
+    height:85px;
+  }
+
+  .card-content h3{
+    font-size:11px;
+  }
+
+  .price{
+    font-size:12px;
+  }
+
+  .add-btn{
+    font-size:11px;
+    padding:7px;
+  }
+
+  .qty-box button{
+    width:26px;
+    height:26px;
+  }
+
+  .qty-box span{
+    font-size:12px;
+  }
 }
 </style>
 </head>
@@ -262,7 +334,7 @@ footer p{
   <img src="https://cdn-icons-png.flaticon.com/512/3081/3081559.png">
 </section>
 
-<h2 style="width:90%;margin:20px auto;">Products</h2>
+<h2 style="width:92%;margin:18px auto;">Products</h2>
 
 <section class="products" id="productContainer"></section>
 
@@ -277,20 +349,18 @@ footer p{
 
 <script>
 
-/* PRODUCTS FROM ADMIN */
+/* SAME LOGIC - NO CHANGE */
 let products = JSON.parse(localStorage.getItem("products")) || [];
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
 const container = document.getElementById("productContainer");
 const hero = document.getElementById("hero");
 
-/* GET QTY */
 function getQty(id){
   let item = cart.find(p=>p.id===id);
   return item ? item.qty : 0;
 }
 
-/* ADD */
 function addToCart(id){
   let item = products.find(p=>p.id===id);
   let existing = cart.find(p=>p.id===id);
@@ -306,7 +376,6 @@ function addToCart(id){
   updateCart();
 }
 
-/* INCREASE */
 function inc(id){
   let item = cart.find(p=>p.id===id);
   if(item){
@@ -315,7 +384,6 @@ function inc(id){
   }
 }
 
-/* DECREASE */
 function dec(id){
   let item = cart.find(p=>p.id===id);
   if(item){
@@ -333,7 +401,6 @@ function save(){
   updateCart();
 }
 
-/* DISPLAY */
 function display(items){
   container.innerHTML="";
 
@@ -343,7 +410,6 @@ function display(items){
   }
 
   items.forEach(p=>{
-
     let qty = getQty(p.id);
 
     container.innerHTML += `
@@ -372,7 +438,6 @@ function display(items){
   });
 }
 
-/* CART COUNT */
 function updateCart(){
   let total = cart.reduce((sum,i)=>sum+i.qty,0);
   document.getElementById("cartCount").innerText = total;
@@ -381,7 +446,6 @@ function updateCart(){
 updateCart();
 display(products);
 
-/* NAV */
 function goToCart(){
   window.location.href="carts.html";
 }
@@ -390,9 +454,7 @@ function goAdmin(){
   window.location.href="login.html";
 }
 
-/* SEARCH */
 document.getElementById("searchInput").addEventListener("input",function(){
-
   let val=this.value.toLowerCase();
   let filtered = products.filter(p=>p.name.toLowerCase().includes(val));
 
