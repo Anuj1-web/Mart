@@ -106,11 +106,18 @@ nav{
   border:1px solid rgba(255,255,255,.08);
 }
 
-.search-box i{
-  position:absolute;
-  right:16px;
-  top:15px;
-  color:var(--muted);
+.search-box input:focus{
+
+  border-color:rgba(247,200,115,.7);
+
+  box-shadow:
+  0 0 0 4px rgba(247,200,115,.10),
+  0 10px 25px rgba(247,200,115,.15),
+  0 0 20px rgba(247,200,115,.08);
+
+  background:rgba(255,255,255,.08);
+
+  transform:scale(1.01);
 }
 
 .admin-btn{
@@ -711,7 +718,7 @@ footer{
 <div class="section-bar">
 
   <div class="section-title">
-    Categories
+    Trending Products
   </div>
 
   <div class="filter-area">
