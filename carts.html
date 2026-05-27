@@ -19,7 +19,6 @@
 
 body{
   background:#f6f8fb;
-  color:#1a1a1a;
 }
 
 /* HEADER */
@@ -32,105 +31,63 @@ header{
   align-items:center;
 }
 
-header h1{
-  font-size:22px;
-}
-
-.back-btn{
-  background:#ff8c42;
-  color:white;
-  padding:8px 15px;
-  border:none;
-  border-radius:20px;
-  cursor:pointer;
-  font-weight:600;
-}
-
-/* CART CONTAINER */
+/* CART ITEM */
 .container{
   width:90%;
-  margin:30px auto;
+  margin:25px auto;
 }
 
-/* ITEM CARD */
 .item{
   background:white;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding:15px;
+  padding:12px;
   border-radius:12px;
-  margin-bottom:15px;
-  box-shadow:0 5px 15px rgba(0,0,0,0.06);
+  margin-bottom:12px;
+  box-shadow:0 5px 12px rgba(0,0,0,0.06);
 }
 
 .item img{
-  width:70px;
-  height:70px;
+  width:65px;
+  height:65px;
   object-fit:cover;
   border-radius:10px;
 }
 
 .details{
   flex:1;
-  margin-left:15px;
-}
-
-.details h3{
-  font-size:16px;
+  margin-left:12px;
 }
 
 .price{
   color:#00a884;
   font-weight:600;
-  margin-top:5px;
 }
 
-/* QUANTITY CONTROLS */
 .qty{
   display:flex;
   align-items:center;
-  gap:10px;
+  gap:8px;
 }
 
 .qty button{
-  width:30px;
-  height:30px;
+  width:28px;
+  height:28px;
   border:none;
-  border-radius:6px;
   background:#0f2d4a;
   color:white;
-  cursor:pointer;
-  font-size:16px;
-}
-
-.qty span{
-  font-weight:600;
-}
-
-/* REMOVE */
-.remove{
-  background:#ff4d4d;
-  border:none;
-  color:white;
-  padding:6px 10px;
   border-radius:6px;
   cursor:pointer;
-  margin-left:10px;
 }
 
 /* SUMMARY */
 .summary{
   background:white;
-  padding:20px;
+  padding:18px;
   border-radius:12px;
-  box-shadow:0 5px 15px rgba(0,0,0,0.06);
   margin-top:20px;
-}
-
-.summary h2{
-  margin-bottom:10px;
-  color:#0f2d4a;
+  box-shadow:0 5px 12px rgba(0,0,0,0.06);
 }
 
 .total{
@@ -140,58 +97,31 @@ header h1{
   margin:10px 0;
 }
 
-/* ADDRESS */
 textarea{
   width:100%;
   padding:10px;
   border-radius:10px;
   border:1px solid #ddd;
   margin-top:10px;
-  resize:none;
 }
 
-/* WHATSAPP BUTTON */
+/* WHATSAPP */
 .whatsapp-btn{
   width:100%;
-  margin-top:15px;
+  margin-top:12px;
   padding:14px;
   background:#25d366;
   color:white;
   border:none;
   border-radius:10px;
-  font-size:16px;
   font-weight:600;
   cursor:pointer;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  gap:10px;
 }
 
-/* EMPTY */
 .empty{
   text-align:center;
   padding:60px 20px;
   color:#666;
-}
-
-.empty i{
-  font-size:60px;
-  margin-bottom:15px;
-  color:#ccc;
-}
-
-/* MOBILE */
-@media(max-width:768px){
-  .item{
-    flex-direction:column;
-    align-items:flex-start;
-    gap:10px;
-  }
-
-  .qty{
-    margin-top:10px;
-  }
 }
 </style>
 </head>
@@ -199,8 +129,7 @@ textarea{
 <body>
 
 <header>
-  <h1>Your Cart</h1>
-  <button class="back-btn" onclick="goBack()">← Back</button>
+  <h2>Your Cart</h2>
 </header>
 
 <div class="container" id="cartContainer"></div>
@@ -209,132 +138,112 @@ textarea{
 
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-function renderCart(){
+/* 🔥 FIX: group same items */
+function groupCart(){
 
-  const container = document.getElementById("cartContainer");
+  let grouped = [];
 
-  if(cart.length === 0){
-    container.innerHTML = `
-      <div class="empty">
-        <i class="fa fa-shopping-cart"></i>
-        <h2>Your cart is empty</h2>
-      </div>
-    `;
+  cart.forEach(item=>{
+
+    let found = grouped.find(p=>p.id === item.id);
+
+    if(found){
+      found.qty += 1;
+    } else {
+      grouped.push({...item, qty:1});
+    }
+  });
+
+  return grouped;
+}
+
+function save(cartData){
+  localStorage.setItem("cart", JSON.stringify(cartData));
+}
+
+/* RENDER */
+function render(){
+
+  let container = document.getElementById("cartContainer");
+  let grouped = groupCart();
+
+  if(grouped.length === 0){
+    container.innerHTML = `<div class="empty"><h2>Your cart is empty</h2></div>`;
     return;
   }
 
   container.innerHTML = "";
 
-  cart.forEach((item,index)=>{
-
-    if(!item.qty){
-      item.qty = 1;
-    }
+  grouped.forEach((item)=>{
 
     container.innerHTML += `
       <div class="item">
-        <img src="${item.image}" />
+        <img src="${item.image}">
 
         <div class="details">
           <h3>${item.name}</h3>
           <div class="price">₹${item.price}</div>
+          <div>Qty: ${item.qty}</div>
         </div>
-
-        <div class="qty">
-          <button onclick="decrease(${index})">-</button>
-          <span>${item.qty}</span>
-          <button onclick="increase(${index})">+</button>
-        </div>
-
-        <button class="remove" onclick="removeItem(${index})">
-          <i class="fa fa-trash"></i>
-        </button>
       </div>
     `;
   });
 
-  updateTotal();
+  updateSummary(grouped);
 }
 
-function increase(i){
-  cart[i].qty++;
-  save();
-}
+/* TOTAL + WHATSAPP */
+function updateSummary(items){
 
-function decrease(i){
-  if(cart[i].qty > 1){
-    cart[i].qty--;
-  } else {
-    removeItem(i);
-  }
-  save();
-}
-
-function removeItem(i){
-  cart.splice(i,1);
-  save();
-}
-
-function save(){
-  localStorage.setItem("cart", JSON.stringify(cart));
-  renderCart();
-}
-
-function updateTotal(){
   let total = 0;
 
-  cart.forEach(item=>{
-    total += item.price * item.qty;
+  items.forEach(i=>{
+    total += i.price * i.qty;
   });
 
   let old = document.querySelector(".summary");
   if(old) old.remove();
 
-  let summary = document.createElement("div");
-  summary.className = "summary";
+  let div = document.createElement("div");
+  div.className = "summary";
 
-  summary.innerHTML = `
-    <h2>Order Summary</h2>
+  div.innerHTML = `
+    <h3>Order Summary</h3>
     <div class="total">Total: ₹${total}</div>
 
-    <textarea id="address" placeholder="Enter delivery address (optional)"></textarea>
+    <textarea id="address" placeholder="Enter address (optional)"></textarea>
 
-    <button class="whatsapp-btn" onclick="sendWhatsApp(${total})">
-      <i class="fab fa-whatsapp"></i> Order on WhatsApp
+    <button class="whatsapp-btn" onclick="sendWhatsApp(${total}, ${JSON.stringify(items).replace(/"/g,'&quot;')})">
+      Order on WhatsApp
     </button>
   `;
 
-  document.getElementById("cartContainer").appendChild(summary);
+  document.getElementById("cartContainer").appendChild(div);
 }
 
-function sendWhatsApp(total){
+/* WHATSAPP ORDER */
+function sendWhatsApp(total, items){
 
-  let number = "91XXXXXXXXXX"; // 🔴 REPLACE WITH YOUR NUMBER
+  let number = "91XXXXXXXXXX"; // replace
 
   let address = document.getElementById("address").value;
 
-  let message = "🛒 *New Order from Balaji Mega Mart*%0A%0A";
+  let msg = "🛒 *Balaji Mega Mart Order*%0A%0A";
 
-  cart.forEach(item=>{
-    message += `• ${item.name} x${item.qty} = ₹${item.price * item.qty}%0A`;
+  items.forEach(i=>{
+    msg += `• ${i.name} x${i.qty} = ₹${i.price * i.qty}%0A`;
   });
 
-  message += `%0A💰 *Total: ₹${total}*%0A`;
+  msg += `%0A💰 Total: ₹${total}%0A`;
 
   if(address){
-    message += `%0A📍 Address: ${address}%0A`;
+    msg += `%0A📍 Address: ${address}%0A`;
   }
 
-  let url = `https://wa.me/${number}?text=${message}`;
-
-  window.open(url,"_blank");
+  window.open(`https://wa.me/${number}?text=${msg}`,"_blank");
 }
 
-function goBack(){
-  window.location.href = "index.html";
-}
-
-renderCart();
+render();
 
 </script>
 
