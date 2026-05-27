@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Balaji Mega Mart</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
+
+body{
+  background:#f6f8fb;
+  color:#1a1a1a;
+}
+
+/* NAVBAR */
+nav{
+  background:#ffffff;
+  padding:16px 6%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  position:sticky;
+  top:0;
+  z-index:1000;
+  box-shadow:0 2px 15px rgba(0,0,0,0.06);
+}
+
+.logo{
+  font-size:26px;
+  font-weight:700;
+  color:#0f2d4a;
+}
+
+.logo span{
+  color:#00a884;
+}
+
+.search-box{
+  width:40%;
+  position:relative;
+}
+
+.search-box input{
+  width:100%;
+  padding:12px 45px 12px 18px;
+  border-radius:30px;
+  border:1px solid #e5e7eb;
+  outline:none;
+  background:#f9fafb;
+  font-size:15px;
+}
+
+.search-box i{
+  position:absolute;
+  right:15px;
+  top:12px;
+  color:#777;
+}
+
+/* HERO */
+.hero{
+  width:90%;
+  margin:30px auto;
+  background:linear-gradient(135deg,#0f2d4a,#1f4e79);
+  border-radius:18px;
+  padding:60px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  color:white;
+  overflow:hidden;
+  position:relative;
+}
+
+.hero::after{
+  content:"";
+  position:absolute;
+  width:300px;
+  height:300px;
+  background:rgba(255,255,255,0.08);
+  border-radius:50%;
+  top:-100px;
+  right:-80px;
+}
+
+.hero-text{
+  max-width:500px;
+  z-index:2;
+}
+
+.hero-text h1{
+  font-size:44px;
+  margin-bottom:15px;
+}
+
+.hero-text p{
+  color:#dbe7f3;
+  margin-bottom:20px;
+  line-height:1.6;
+}
+
+.hero-btn{
+  padding:12px 25px;
+  border:none;
+  border-radius:25px;
+  background:#ff8c42;
+  color:white;
+  font-weight:600;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.hero-btn:hover{
+  transform:scale(1.05);
+}
+
+.hero img{
+  width:320px;
+  z-index:2;
+}
+
+/* SECTION TITLE */
+.section-title{
+  width:90%;
+  margin:30px auto 15px;
+  font-size:26px;
+  font-weight:600;
+  color:#0f2d4a;
+}
+
+/* PRODUCTS */
+.products{
+  width:90%;
+  margin:auto;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:20px;
+  padding-bottom:60px;
+}
+
+.card{
+  background:white;
+  border-radius:14px;
+  overflow:hidden;
+  box-shadow:0 5px 15px rgba(0,0,0,0.06);
+  transition:0.3s;
+}
+
+.card:hover{
+  transform:translateY(-5px);
+}
+
+.card img{
+  width:100%;
+  height:200px;
+  object-fit:cover;
+}
+
+.card-content{
+  padding:15px;
+}
+
+.card-content h3{
+  font-size:18px;
+  margin-bottom:8px;
+}
+
+.price{
+  color:#00a884;
+  font-weight:600;
+  font-size:18px;
+  margin-bottom:10px;
+}
+
+.add-btn{
+  width:100%;
+  padding:10px;
+  border:none;
+  border-radius:8px;
+  background:#0f2d4a;
+  color:white;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.add-btn:hover{
+  background:#1f4e79;
+}
+
+/* CART */
+.cart-icon{
+  position:fixed;
+  bottom:25px;
+  right:25px;
+  width:65px;
+  height:65px;
+  background:#ff8c42;
+  border-radius:50%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  color:white;
+  font-size:24px;
+  cursor:pointer;
+  box-shadow:0 10px 25px rgba(255,140,66,0.4);
+}
+
+.cart-count{
+  position:absolute;
+  top:-3px;
+  right:-3px;
+  background:#0f2d4a;
+  color:white;
+  width:22px;
+  height:22px;
+  border-radius:50%;
+  font-size:12px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+/* FOOTER */
+footer{
+  text-align:center;
+  padding:40px;
+  background:#0f2d4a;
+  color:white;
+}
+
+footer p{
+  color:#cbd5e1;
+}
+
+/* MOBILE */
+@media(max-width:768px){
+  nav{
+    flex-direction:column;
+    gap:10px;
+  }
+
+  .search-box{
+    width:100%;
+  }
+
+  .hero{
+    flex-direction:column;
+    text-align:center;
+    padding:40px 25px;
+  }
+
+  .hero img{
+    width:220px;
+    margin-top:20px;
+  }
+
+  .hero-text h1{
+    font-size:32px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+  <div class="logo">Balaji <span>Mega Mart</span></div>
+
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="Search groceries, snacks...">
+    <i class="fa fa-search"></i>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-text">
+    <h1>Fresh Groceries Delivered Fast</h1>
+    <p>Order daily essentials at best prices with fast and reliable service.</p>
+    <button class="hero-btn">Shop Now</button>
+  </div>
+  <img src="https://cdn-icons-png.flaticon.com/512/3081/3081559.png">
+</section>
+
+<h2 class="section-title">Popular Products</h2>
+
+<section class="products" id="productContainer"></section>
+
+<div class="cart-icon" onclick="goToCart()">
+  <i class="fa fa-shopping-cart"></i>
+  <div class="cart-count" id="cartCount">0</div>
+</div>
+
+<footer>
+  <h3>Balaji Mega Mart</h3>
+  <p>Fresh. Fast. Reliable.</p>
+</footer>
+
+<script>
+
+const products = [
+{ id:1, name:"Fresh Apples", price:120, image:"https://images.unsplash.com/photo-1567306226416-28f0efdc88ce"},
+{ id:2, name:"Organic Milk", price:60, image:"https://images.unsplash.com/photo-1550583724-b2692b85b150"},
+{ id:3, name:"Potato Chips", price:40, image:"https://images.unsplash.com/photo-1585238342024-78d387f4a707"},
+{ id:4, name:"Fresh Bread", price:35, image:"https://images.unsplash.com/photo-1509440159596-0249088772ff"},
+{ id:5, name:"Rice Bag", price:850, image:"https://images.unsplash.com/photo-1586201375761-83865001e31c"},
+{ id:6, name:"Cold Drinks", price:90, image:"https://images.unsplash.com/photo-1622483767028-3f66f32aef97"}
+];
+
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+const container = document.getElementById("productContainer");
+
+function display(items){
+  container.innerHTML="";
+  items.forEach(p=>{
+    container.innerHTML+=`
+    <div class="card">
+      <img src="${p.image}">
+      <div class="card-content">
+        <h3>${p.name}</h3>
+        <div class="price">₹${p.price}</div>
+        <button class="add-btn" onclick="addToCart(${p.id})">Add To Cart</button>
+      </div>
+    </div>`;
+  });
+}
+
+display(products);
+
+function addToCart(id){
+  const item = products.find(p=>p.id===id);
+  cart.push(item);
+  localStorage.setItem("cart",JSON.stringify(cart));
+  updateCart();
+}
+
+function updateCart(){
+  document.getElementById("cartCount").innerText = cart.length;
+}
+
+updateCart();
+
+function goToCart(){
+  window.location.href="carts.html";
+}
+
+document.getElementById("searchInput").addEventListener("input",function(){
+  let val=this.value.toLowerCase();
+  let filtered=products.filter(p=>p.name.toLowerCase().includes(val));
+  display(filtered);
+});
+
+</script>
+
+</body>
+</html>
