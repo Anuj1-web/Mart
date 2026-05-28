@@ -1,257 +1,1045 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
+<meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Admin Panel - Balaji Mega Mart</title>
+<meta name="theme-color" content="#07111f"/>
+
+<title>Balaji Mega Mart Admin</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
-body{
-  font-family:Arial;
-  background:#f5f7fb;
-  margin:0;
+
+:root{
+  --bg:#07111f;
+  --bg2:#0d1b2d;
+  --card:rgba(255,255,255,0.06);
+  --line:rgba(255,255,255,0.08);
+
+  --text:#f4f7ff;
+  --muted:#9ba8c7;
+
+  --primary:#7c3aed;
+  --primary2:#5b21b6;
+
+  --gold:#f7c873;
+  --green:#38d39f;
+  --red:#ff5c7a;
+
+  --shadow:0 15px 35px rgba(0,0,0,.35);
 }
 
-header{
-  background:#0f2d4a;
-  color:white;
-  padding:15px;
-  text-align:center;
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Inter',sans-serif;
+  -webkit-tap-highlight-color:transparent;
 }
+
+body{
+  background:
+  radial-gradient(circle at top left,#1f1147 0%,transparent 30%),
+  radial-gradient(circle at bottom right,#00354f 0%,transparent 30%),
+  linear-gradient(135deg,var(--bg),var(--bg2));
+
+  color:var(--text);
+  min-height:100vh;
+}
+
+/* ================= NAV ================= */
+
+nav{
+  position:sticky;
+  top:0;
+  z-index:999;
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  padding:18px 5%;
+
+  background:rgba(7,17,31,.8);
+  backdrop-filter:blur(18px);
+
+  border-bottom:1px solid var(--line);
+}
+
+.logo{
+  font-size:24px;
+  font-weight:800;
+}
+
+.logo span{
+  background:linear-gradient(135deg,var(--gold),#ff9f43);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+
+.back-btn{
+  border:none;
+  padding:12px 18px;
+
+  border-radius:14px;
+
+  background:linear-gradient(135deg,var(--primary),var(--primary2));
+
+  color:white;
+
+  font-weight:700;
+  cursor:pointer;
+}
+
+/* ================= MAIN ================= */
 
 .container{
-  width:90%;
-  margin:20px auto;
+  width:92%;
+  max-width:1300px;
+  margin:30px auto;
 }
 
-.form{
-  background:white;
-  padding:20px;
-  border-radius:10px;
-  box-shadow:0 5px 15px rgba(0,0,0,0.1);
+/* ================= TOP GRID ================= */
+
+.top-grid{
+  display:grid;
+  grid-template-columns:420px 1fr;
+  gap:25px;
 }
 
-input, select{
+@media(max-width:1000px){
+
+  .top-grid{
+    grid-template-columns:1fr;
+  }
+
+}
+
+/* ================= FORM ================= */
+
+.form-card{
+  background:var(--card);
+
+  border:1px solid var(--line);
+
+  border-radius:28px;
+
+  padding:26px;
+
+  backdrop-filter:blur(18px);
+
+  box-shadow:var(--shadow);
+
+  position:sticky;
+  top:100px;
+}
+
+.form-title{
+  font-size:26px;
+  font-weight:800;
+  margin-bottom:6px;
+}
+
+.form-sub{
+  color:var(--muted);
+  margin-bottom:25px;
+  font-size:14px;
+}
+
+.input-box{
+  margin-bottom:18px;
+}
+
+.input-box label{
+  display:block;
+  margin-bottom:8px;
+  font-size:14px;
+  font-weight:600;
+}
+
+.input-box input{
   width:100%;
-  padding:10px;
-  margin:10px 0;
-  border:1px solid #ddd;
-  border-radius:6px;
-}
 
-button{
-  padding:10px 15px;
+  padding:14px 16px;
+
   border:none;
-  cursor:pointer;
-  border-radius:6px;
+  outline:none;
+
+  border-radius:16px;
+
+  background:rgba(255,255,255,.06);
+
+  border:1px solid rgba(255,255,255,.08);
+
+  color:var(--text);
+
+  transition:.3s;
 }
 
-.add-btn{
-  background:#0f2d4a;
+.input-box input:focus{
+  border-color:rgba(247,200,115,.5);
+
+  box-shadow:
+  0 0 0 5px rgba(247,200,115,.08);
+}
+
+.image-preview{
+  width:100%;
+  height:220px;
+
+  border-radius:22px;
+
+  overflow:hidden;
+
+  border:1px solid rgba(255,255,255,.08);
+
+  background:rgba(255,255,255,.05);
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  margin-bottom:20px;
+}
+
+.image-preview img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+}
+
+.price-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+
+.discount-box{
+  background:rgba(56,211,159,.12);
+
+  border:1px solid rgba(56,211,159,.2);
+
+  padding:16px;
+
+  border-radius:18px;
+
+  margin-bottom:20px;
+}
+
+.discount-box h3{
+  font-size:15px;
+  margin-bottom:8px;
+}
+
+.discount-box p{
+  font-size:28px;
+  color:var(--green);
+  font-weight:800;
+}
+
+.action-buttons{
+  display:flex;
+  gap:12px;
+}
+
+.action-buttons button{
+  flex:1;
+
+  border:none;
+
+  padding:14px;
+
+  border-radius:16px;
+
+  font-weight:700;
+
+  cursor:pointer;
+
+  transition:.25s;
+}
+
+.save-btn{
+  background:linear-gradient(135deg,var(--gold),#ff9f43);
+  color:#111827;
+}
+
+.clear-btn{
+  background:rgba(255,255,255,.08);
   color:white;
 }
 
-.list{
-  margin-top:20px;
+.action-buttons button:hover{
+  transform:translateY(-2px);
 }
 
-.item{
+/* ================= PRODUCTS ================= */
+
+.products-section{
+  background:var(--card);
+
+  border:1px solid var(--line);
+
+  border-radius:28px;
+
+  padding:26px;
+
+  backdrop-filter:blur(18px);
+
+  box-shadow:var(--shadow);
+}
+
+.section-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+
+  margin-bottom:25px;
+}
+
+.section-top h2{
+  font-size:28px;
+  font-weight:800;
+}
+
+.search-box{
+  width:300px;
+  position:relative;
+}
+
+.search-box input{
+  width:100%;
+
+  padding:14px 16px 14px 44px;
+
+  border:none;
+  outline:none;
+
+  border-radius:16px;
+
+  background:rgba(255,255,255,.06);
+
+  border:1px solid rgba(255,255,255,.08);
+
+  color:white;
+}
+
+.search-box i{
+  position:absolute;
+  left:16px;
+  top:15px;
+  color:var(--muted);
+}
+
+.products-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+  gap:20px;
+}
+
+.product-card{
+  background:rgba(255,255,255,.05);
+
+  border:1px solid rgba(255,255,255,.08);
+
+  border-radius:24px;
+
+  overflow:hidden;
+
+  transition:.3s;
+}
+
+.product-card:hover{
+  transform:translateY(-5px);
+}
+
+.product-image{
+  width:100%;
+  height:220px;
+
+  background:rgba(255,255,255,.04);
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.product-image img{
+  width:80%;
+  height:80%;
+  object-fit:contain;
+}
+
+.product-content{
+  padding:18px;
+}
+
+.product-category{
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.5px;
+
+  color:var(--gold);
+
+  margin-bottom:8px;
+}
+
+.product-name{
+  font-size:16px;
+  font-weight:700;
+  line-height:1.5;
+
+  min-height:48px;
+}
+
+.price-row{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+
+  margin:16px 0;
+}
+
+.sp{
+  font-size:24px;
+  font-weight:800;
+  color:var(--green);
+}
+
+.mp{
+  font-size:13px;
+  color:var(--muted);
+  text-decoration:line-through;
+}
+
+.discount{
+  font-size:13px;
+  font-weight:700;
+  color:var(--red);
+}
+
+.card-buttons{
   display:flex;
   gap:10px;
-  align-items:center;
-  background:white;
-  padding:10px;
-  margin-bottom:10px;
-  border-radius:8px;
-  box-shadow:0 5px 10px rgba(0,0,0,0.05);
 }
 
-.item img{
-  width:60px;
-  height:60px;
-  object-fit:cover;
-  border-radius:6px;
+.card-buttons button{
+  flex:1;
+
+  border:none;
+
+  padding:12px;
+
+  border-radius:14px;
+
+  font-weight:700;
+
+  cursor:pointer;
+
+  transition:.25s;
 }
 
-.actions button{
-  margin-left:5px;
-  background:#ff8c42;
+.edit-btn{
+  background:linear-gradient(135deg,var(--primary),#2563eb);
   color:white;
 }
 
-.delete{
-  background:#ff4d4d !important;
+.delete-btn{
+  background:linear-gradient(135deg,#ff4d6d,#ff758f);
+  color:white;
 }
 
-.preview{
-  width:100px;
-  height:100px;
-  object-fit:cover;
-  margin-top:10px;
-  display:none;
-  border-radius:8px;
+.card-buttons button:hover{
+  transform:translateY(-2px);
 }
+
+.empty{
+  text-align:center;
+  padding:60px 20px;
+  color:var(--muted);
+}
+
+@media(max-width:700px){
+
+  .section-top{
+    flex-direction:column;
+    align-items:stretch;
+  }
+
+  .search-box{
+    width:100%;
+  }
+
+  .products-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+}
+
 </style>
 </head>
 
 <body>
 
-<header>
-  <h2>Admin Panel - Balaji Mega Mart</h2>
-</header>
+<nav>
+
+  <div class="logo">
+    Balaji <span>Mega Mart</span> Admin
+  </div>
+
+  <button class="back-btn" onclick="goHome()">
+    <i class="fa fa-house"></i>
+    Home
+  </button>
+
+</nav>
 
 <div class="container">
 
-  <div class="form">
-    <h3>Add Product</h3>
+  <div class="top-grid">
 
-    <input type="text" id="name" placeholder="Product Name"/>
-    <input type="number" id="price" placeholder="Price"/>
+    <!-- ================= FORM ================= -->
 
-    <select id="imageType" onchange="toggleInput()">
-      <option value="url">Image URL</option>
-      <option value="upload">Upload Image</option>
-    </select>
+    <div class="form-card">
 
-    <input type="text" id="imageUrl" placeholder="Paste Image URL"/>
-    <input type="file" id="imageFile" style="display:none" accept="image/*"/>
+      <div class="form-title">
+        Add / Edit Product
+      </div>
 
-    <img id="preview" class="preview"/>
+      <div class="form-sub">
+        Add new grocery items or edit existing ones instantly.
+      </div>
 
-    <button class="add-btn" onclick="addProduct()">Add Product</button>
+      <div class="image-preview" id="imagePreview">
+
+        <img
+          id="previewImg"
+          src="https://cdn-icons-png.flaticon.com/512/1046/1046857.png"
+        >
+
+      </div>
+
+      <div class="input-box">
+
+        <label>
+          Product Image URL
+        </label>
+
+        <input
+          type="text"
+          id="image"
+          placeholder="Paste image URL"
+          oninput="previewImage()"
+        >
+
+      </div>
+
+      <div class="input-box">
+
+        <label>
+          Product Name
+        </label>
+
+        <input
+          type="text"
+          id="name"
+          placeholder="Enter product name"
+        >
+
+      </div>
+
+      <div class="price-grid">
+
+        <div class="input-box">
+
+          <label>
+            MP / MRP
+          </label>
+
+          <input
+            type="number"
+            id="mrp"
+            placeholder="299"
+            oninput="calculateDiscount()"
+          >
+
+        </div>
+
+        <div class="input-box">
+
+          <label>
+            SP / Selling Price
+          </label>
+
+          <input
+            type="number"
+            id="price"
+            placeholder="199"
+            oninput="calculateDiscount()"
+          >
+
+        </div>
+
+      </div>
+
+      <div class="input-box">
+
+        <label>
+          Product Rating
+        </label>
+
+        <input
+          type="number"
+          id="rating"
+          placeholder="4.5"
+          step="0.1"
+        >
+
+      </div>
+
+      <div class="input-box">
+
+        <label>
+          Category
+        </label>
+
+        <input
+          type="text"
+          id="category"
+          placeholder="Fruits, Snacks, Dairy..."
+        >
+
+      </div>
+
+      <div class="discount-box">
+
+        <h3>
+          Discount Percentage
+        </h3>
+
+        <p id="discountPreview">
+          0% OFF
+        </p>
+
+      </div>
+
+      <div class="action-buttons">
+
+        <button
+          class="save-btn"
+          onclick="saveProduct()"
+        >
+          Save Product
+        </button>
+
+        <button
+          class="clear-btn"
+          onclick="clearForm()"
+        >
+          Clear
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- ================= PRODUCTS ================= -->
+
+    <div class="products-section">
+
+      <div class="section-top">
+
+        <h2>
+          All Products
+        </h2>
+
+        <div class="search-box">
+
+          <i class="fa fa-search"></i>
+
+          <input
+            type="text"
+            placeholder="Search products..."
+            id="searchInput"
+            oninput="searchProducts()"
+          >
+
+        </div>
+
+      </div>
+
+      <div
+        class="products-grid"
+        id="productsGrid"
+      ></div>
+
+    </div>
+
   </div>
-
-  <div class="list" id="list"></div>
 
 </div>
 
 <script>
 
-let products = JSON.parse(localStorage.getItem("products")) || [];
+/* ================= DATA ================= */
 
-// toggle input type
-function toggleInput(){
-  let type = document.getElementById("imageType").value;
+let products =
+JSON.parse(localStorage.getItem("products")) || [];
 
-  if(type === "upload"){
-    document.getElementById("imageFile").style.display="block";
-    document.getElementById("imageUrl").style.display="none";
+let editId = null;
+
+/* ================= IMAGE PREVIEW ================= */
+
+function previewImage(){
+
+  let url =
+  document.getElementById("image").value;
+
+  document.getElementById(
+    "previewImg"
+  ).src =
+  url ||
+  "https://cdn-icons-png.flaticon.com/512/1046/1046857.png";
+}
+
+/* ================= DISCOUNT ================= */
+
+function calculateDiscount(){
+
+  let mrp =
+  Number(document.getElementById("mrp").value);
+
+  let price =
+  Number(document.getElementById("price").value);
+
+  if(mrp > 0 && price > 0){
+
+    let discount =
+    Math.round(
+      ((mrp - price) / mrp) * 100
+    );
+
+    document.getElementById(
+      "discountPreview"
+    ).innerText =
+    discount + "% OFF";
+
   }else{
-    document.getElementById("imageFile").style.display="none";
-    document.getElementById("imageUrl").style.display="block";
+
+    document.getElementById(
+      "discountPreview"
+    ).innerText =
+    "0% OFF";
   }
 }
 
-// preview uploaded image
-document.getElementById("imageFile").addEventListener("change",function(){
+/* ================= SAVE PRODUCT ================= */
 
-  let file = this.files[0];
+function saveProduct(){
 
-  if(file){
-    let reader = new FileReader();
+  let image =
+  document.getElementById("image").value;
 
-    reader.onload = function(e){
-      document.getElementById("preview").src = e.target.result;
-      document.getElementById("preview").style.display="block";
-    }
+  let name =
+  document.getElementById("name").value;
 
-    reader.readAsDataURL(file);
-  }
-});
+  let mrp =
+  document.getElementById("mrp").value;
 
-// ADD PRODUCT
-function addProduct(){
+  let price =
+  document.getElementById("price").value;
 
-  let name = document.getElementById("name").value;
-  let price = document.getElementById("price").value;
-  let type = document.getElementById("imageType").value;
+  let rating =
+  document.getElementById("rating").value || 4.5;
 
-  let image = "";
+  let category =
+  document.getElementById("category").value;
 
-  if(type === "url"){
-    image = document.getElementById("imageUrl").value;
-  }else{
-    image = document.getElementById("preview").src;
-  }
+  if(
+    !image ||
+    !name ||
+    !mrp ||
+    !price ||
+    !category
+  ){
 
-  if(!name || !price || !image){
-    alert("Fill all fields");
+    alert("Please fill all required fields");
+
     return;
   }
 
-  products.push({
-    id:Date.now(),
-    name,
-    price:Number(price),
-    image
-  });
+  if(editId){
 
-  save();
+    products =
+    products.map(p =>
+
+      p.id === editId
+
+      ?
+
+      {
+        ...p,
+        image,
+        name,
+        mrp:Number(mrp),
+        price:Number(price),
+        rating:Number(rating),
+        category
+      }
+
+      :
+
+      p
+    );
+
+  }else{
+
+    products.unshift({
+
+      id:Date.now(),
+
+      image,
+
+      name,
+
+      mrp:Number(mrp),
+
+      price:Number(price),
+
+      rating:Number(rating),
+
+      category
+
+    });
+
+  }
+
+  localStorage.setItem(
+    "products",
+    JSON.stringify(products)
+  );
+
+  renderProducts();
+
   clearForm();
+
+  alert("Product Saved Successfully");
 }
 
-// CLEAR FORM
-function clearForm(){
-  document.getElementById("name").value="";
-  document.getElementById("price").value="";
-  document.getElementById("imageUrl").value="";
-  document.getElementById("imageFile").value="";
-  document.getElementById("preview").style.display="none";
-}
+/* ================= RENDER PRODUCTS ================= */
 
-// SAVE
-function save(){
-  localStorage.setItem("products",JSON.stringify(products));
-  render();
-}
+function renderProducts(list = products){
 
-// DELETE
-function deleteProduct(id){
-  products = products.filter(p=>p.id!==id);
-  save();
-}
+  const grid =
+  document.getElementById("productsGrid");
 
-// EDIT
-function editProduct(id){
+  if(list.length === 0){
 
-  let p = products.find(x=>x.id===id);
+    grid.innerHTML =
+    `
+    <div class="empty">
+      No products added yet
+    </div>
+    `;
 
-  let newName = prompt("Edit name",p.name);
-  let newPrice = prompt("Edit price",p.price);
-  let newImage = prompt("Edit image URL",p.image);
+    return;
+  }
 
-  if(newName) p.name = newName;
-  if(newPrice) p.price = Number(newPrice);
-  if(newImage) p.image = newImage;
+  grid.innerHTML = "";
 
-  save();
-}
+  list.forEach(p => {
 
-// RENDER
-function render(){
+    let discount =
+    Math.round(
+      ((p.mrp - p.price) / p.mrp) * 100
+    );
 
-  let list = document.getElementById("list");
-  list.innerHTML="";
+    grid.innerHTML += `
 
-  products.forEach(p=>{
-    list.innerHTML += `
-      <div class="item">
+    <div class="product-card">
+
+      <div class="product-image">
+
         <img src="${p.image}">
-        <div>
-          <b>${p.name}</b><br>
-          ₹${p.price}
+
+      </div>
+
+      <div class="product-content">
+
+        <div class="product-category">
+          ${p.category}
         </div>
 
-        <div class="actions">
-          <button onclick="editProduct(${p.id})">Edit</button>
-          <button class="delete" onclick="deleteProduct(${p.id})">Delete</button>
+        <div class="product-name">
+          ${p.name}
         </div>
+
+        <div class="price-row">
+
+          <div>
+
+            <div class="sp">
+              ₹${p.price}
+            </div>
+
+            <div class="mp">
+              ₹${p.mrp}
+            </div>
+
+          </div>
+
+          <div class="discount">
+            ${discount}% OFF
+          </div>
+
+        </div>
+
+        <div class="card-buttons">
+
+          <button
+            class="edit-btn"
+            onclick="editProduct(${p.id})"
+          >
+            <i class="fa fa-pen"></i>
+            Edit
+          </button>
+
+          <button
+            class="delete-btn"
+            onclick="deleteProduct(${p.id})"
+          >
+            <i class="fa fa-trash"></i>
+            Delete
+          </button>
+
+        </div>
+
       </div>
+
+    </div>
     `;
   });
 }
 
-render();
+/* ================= EDIT ================= */
+
+function editProduct(id){
+
+  let p =
+  products.find(item => item.id === id);
+
+  if(!p) return;
+
+  editId = id;
+
+  document.getElementById("image").value =
+  p.image;
+
+  document.getElementById("name").value =
+  p.name;
+
+  document.getElementById("mrp").value =
+  p.mrp;
+
+  document.getElementById("price").value =
+  p.price;
+
+  document.getElementById("rating").value =
+  p.rating;
+
+  document.getElementById("category").value =
+  p.category;
+
+  previewImage();
+
+  calculateDiscount();
+
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
+}
+
+/* ================= DELETE ================= */
+
+function deleteProduct(id){
+
+  let confirmDelete =
+  confirm("Delete this product?");
+
+  if(!confirmDelete) return;
+
+  products =
+  products.filter(p => p.id !== id);
+
+  localStorage.setItem(
+    "products",
+    JSON.stringify(products)
+  );
+
+  renderProducts();
+}
+
+/* ================= CLEAR ================= */
+
+function clearForm(){
+
+  editId = null;
+
+  document.getElementById("image").value = "";
+  document.getElementById("name").value = "";
+  document.getElementById("mrp").value = "";
+  document.getElementById("price").value = "";
+  document.getElementById("rating").value = "";
+  document.getElementById("category").value = "";
+
+  document.getElementById(
+    "previewImg"
+  ).src =
+  "https://cdn-icons-png.flaticon.com/512/1046/1046857.png";
+
+  document.getElementById(
+    "discountPreview"
+  ).innerText =
+  "0% OFF";
+}
+
+/* ================= SEARCH ================= */
+
+function searchProducts(){
+
+  let value =
+  document.getElementById("searchInput")
+  .value
+  .toLowerCase();
+
+  let filtered =
+  products.filter(p =>
+
+    p.name.toLowerCase().includes(value)
+
+    ||
+
+    p.category.toLowerCase().includes(value)
+  );
+
+  renderProducts(filtered);
+}
+
+/* ================= ROUTING ================= */
+
+function goHome(){
+
+  window.location.href = "index.html";
+}
+
+/* ================= INIT ================= */
+
+renderProducts();
 
 </script>
 
