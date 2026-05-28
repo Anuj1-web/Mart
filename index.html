@@ -1510,13 +1510,28 @@ function save(){
     JSON.stringify(cart)
   );
 
-  displayCategoryWise(products);
-
   updateCart();
 
-  restoreSliderPosition();
-}
+  const activeSearch =
+  document.getElementById("searchInput")
+  .value
+  .toLowerCase();
 
+  let filtered = activeSearch
+  ? products.filter(p =>
+      p.name.toLowerCase().includes(activeSearch)
+    )
+  : products;
+
+  displayCategoryWise(filtered);
+
+  requestAnimationFrame(()=>{
+
+    restoreSliderPosition();
+
+  });
+
+}
 /* ================= CREATE PRODUCT CARD ================= */
 
 function createCard(p){
