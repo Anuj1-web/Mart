@@ -531,6 +531,26 @@ nav{
   cursor:pointer;
 
   z-index:5;
+
+  transition:.25s;
+}
+
+.favorite.active{
+  background:
+  linear-gradient(
+    135deg,
+    #ff4d6d,
+    #ff758f
+  );
+
+  color:white;
+
+  box-shadow:
+  0 8px 18px rgba(255,77,109,.35);
+}
+
+.favorite.active i{
+  color:white;
 }
 
 .card-content{
@@ -967,6 +987,9 @@ JSON.parse(localStorage.getItem("products")) || [];
 let cart =
 JSON.parse(localStorage.getItem("cart")) || [];
 
+let favorites =
+JSON.parse(localStorage.getItem("favorites")) || [];
+
 const hero =
 document.getElementById("hero");
 
@@ -979,9 +1002,80 @@ function getQty(id){
   return item ? item.qty : 0;
 }
 
+/* ================= FAVORITES ================= */
+
+function isFavorite(id){
+
+  return favorites.some(p => p.id === id);
+}
+
+function toggleFavorite(id,el){
+
+  let item =
+  products.find(p => p.id === id);
+
+  let exists =
+  favorites.find(p => p.id === id);
+
+  if(exists){
+
+    favorites =
+    favorites.filter(p => p.id !== id);
+
+    el.classList.remove("active");
+
+  }else{
+
+    favorites.push(item);
+
+    el.classList.add("active");
+  }
+
+  localStorage.setItem(
+    "favorites",
+    JSON.stringify(favorites)
+  );
+}
+
+/* ================= SLIDER SAVE ================= */
+
+let sliderPositions = [];
+
+function preserveSliderPosition(){
+
+  sliderPositions = [];
+
+  document
+  .querySelectorAll(".products-slider")
+  .forEach((slider,index)=>{
+
+    sliderPositions[index] =
+    slider.scrollLeft;
+
+  });
+}
+
+function restoreSliderPosition(){
+
+  setTimeout(()=>{
+
+    document
+    .querySelectorAll(".products-slider")
+    .forEach((slider,index)=>{
+
+      slider.scrollLeft =
+      sliderPositions[index] || 0;
+
+    });
+
+  },20);
+}
+
 /* ================= ADD ================= */
 
 function addToCart(id){
+
+  preserveSliderPosition();
 
   let item =
   products.find(p => p.id === id);
@@ -1009,6 +1103,8 @@ function addToCart(id){
 
 function inc(id){
 
+  preserveSliderPosition();
+
   let item =
   cart.find(p => p.id === id);
 
@@ -1023,6 +1119,8 @@ function inc(id){
 /* ================= DECREASE ================= */
 
 function dec(id){
+
+  preserveSliderPosition();
 
   let item =
   cart.find(p => p.id === id);
@@ -1054,6 +1152,8 @@ function save(){
   displayCategoryWise(products);
 
   updateCart();
+
+  restoreSliderPosition();
 }
 
 /* ================= CREATE PRODUCT CARD ================= */
@@ -1070,6 +1170,11 @@ function createCard(p){
   let saving =
   p.mrp - p.price;
 
+  let favClass =
+  isFavorite(p.id)
+  ? "favorite active"
+  : "favorite";
+
   return `
 
   <div class="card">
@@ -1080,7 +1185,10 @@ function createCard(p){
         ${discount}% OFF
       </div>
 
-      <div class="favorite">
+      <div
+        class="${favClass}"
+        onclick="toggleFavorite(${p.id},this)"
+      >
         <i class="fa fa-heart"></i>
       </div>
 
