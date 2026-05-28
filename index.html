@@ -21,7 +21,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
 :root{
   --bg:#07111f;
   --bg2:#0d1b2d;
-  --card:#101c2d;
+  --card:rgba(255,255,255,0.06);
   --glass:rgba(255,255,255,0.08);
   --line:rgba(255,255,255,0.08);
 
@@ -34,9 +34,9 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
   --gold:#f7c873;
   --green:#38d39f;
 
-  --shadow:0 10px 25px rgba(0,0,0,0.25);
+  --shadow:0 15px 35px rgba(0,0,0,0.35);
 
-  --radius:20px;
+  --radius:22px;
 }
 
 /* ================= GLOBAL ================= */
@@ -61,7 +61,22 @@ body{
 
   color:var(--text);
   overflow-x:hidden;
+
+  animation:fadePage .5s ease;
 }
+
+@keyframes fadePage{
+  from{
+    opacity:0;
+    transform:translateY(10px);
+  }
+  to{
+    opacity:1;
+    transform:none;
+  }
+}
+
+/* ================= PAGE EXIT ================= */
 
 .page-exit{
   animation:pageOut .18s ease forwards;
@@ -80,15 +95,13 @@ nav{
   position:sticky;
   top:0;
   z-index:999;
-
   padding:14px 5%;
-
   display:flex;
   align-items:center;
   justify-content:space-between;
   gap:14px;
 
-  background:rgba(7,17,31,0.75);
+  background:rgba(7,17,31,0.7);
   backdrop-filter:blur(18px);
 
   border-bottom:1px solid var(--line);
@@ -97,6 +110,7 @@ nav{
 .logo{
   font-size:22px;
   font-weight:800;
+  letter-spacing:.5px;
 }
 
 .logo span{
@@ -132,7 +146,8 @@ nav{
   border-color:rgba(247,200,115,.5);
 
   box-shadow:
-  0 0 0 5px rgba(247,200,115,.08);
+  0 0 0 5px rgba(247,200,115,.08),
+  0 10px 25px rgba(0,0,0,.2);
 }
 
 .search-box i{
@@ -144,10 +159,8 @@ nav{
 
 .admin-btn{
   border:none;
-
   padding:12px 18px;
-
-  border-radius:14px;
+  border-radius:16px;
 
   background:
   linear-gradient(135deg,var(--primary),var(--primary2));
@@ -159,6 +172,9 @@ nav{
   cursor:pointer;
 
   transition:.25s;
+
+  box-shadow:
+  0 10px 25px rgba(124,58,237,.25);
 }
 
 .admin-btn:hover{
@@ -171,7 +187,7 @@ nav{
   width:92%;
   margin:20px auto;
 
-  border-radius:30px;
+  border-radius:32px;
 
   overflow:hidden;
 
@@ -193,6 +209,26 @@ nav{
   justify-content:space-between;
 
   padding:34px;
+}
+
+.hero::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+  linear-gradient(120deg,
+  transparent,
+  rgba(255,255,255,.08),
+  transparent);
+
+  transform:translateX(-100%);
+  animation:shine 5s infinite;
+}
+
+@keyframes shine{
+  100%{
+    transform:translateX(200%);
+  }
 }
 
 .hero-text{
@@ -225,6 +261,8 @@ nav{
   border:1px solid rgba(255,255,255,.08);
 
   font-size:13px;
+
+  color:#fff;
 }
 
 .hero-buttons{
@@ -253,91 +291,206 @@ nav{
   border:1px solid rgba(255,255,255,.08);
 }
 
-.hero img{
-  width:240px;
-  filter:drop-shadow(0 20px 35px rgba(0,0,0,.3));
+.hero-btn:hover{
+  transform:translateY(-2px);
 }
 
-.section-title{
-  width:92%;
-  margin:24px auto 18px;
+.hero img{
+  width:260px;
+  z-index:2;
 
+  filter:drop-shadow(0 25px 40px rgba(0,0,0,.35));
+
+  animation:float 4s ease-in-out infinite;
+}
+
+@keyframes float{
+  50%{
+    transform:translateY(-10px);
+  }
+}
+
+/* ================= CATEGORY SECTION ================= */
+
+.category-section{
+  width:92%;
+  margin:30px auto;
+}
+
+.category-header{
   display:flex;
   align-items:center;
   justify-content:space-between;
+  margin-bottom:18px;
 }
 
-.section-title h2{
+.category-header h2{
   font-size:24px;
+  font-weight:800;
 }
 
-/* ================= PRODUCTS ================= */
-
-.products{
-  width:92%;
-  margin:auto;
-
-  display:grid;
-  grid-template-columns:repeat(5,1fr);
-
-  gap:18px;
-
-  padding-bottom:120px;
+.category-header span{
+  color:var(--gold);
+  font-size:14px;
+  font-weight:600;
+  cursor:pointer;
 }
 
-/* ================= CARD ================= */
+/* ================= HORIZONTAL SLIDER ================= */
+
+.products-slider{
+  display:flex;
+  gap:16px;
+  overflow-x:auto;
+  scroll-behavior:smooth;
+  padding-bottom:8px;
+}
+
+.products-slider::-webkit-scrollbar{
+  display:none;
+}
+
+/* ================= PREMIUM PRODUCT CARD ================= */
 
 .card{
-  background:var(--card);
+  min-width:210px;
+  max-width:210px;
 
-  border-radius:22px;
+  background:rgba(255,255,255,0.06);
+
+  border:1px solid rgba(255,255,255,0.08);
+
+  border-radius:24px;
 
   overflow:hidden;
 
-  border:1px solid rgba(255,255,255,.06);
+  backdrop-filter:blur(18px);
 
   transition:.3s;
 
-  box-shadow:var(--shadow);
+  position:relative;
+
+  box-shadow:
+  0 10px 25px rgba(0,0,0,0.25);
 }
 
 .card:hover{
-  transform:translateY(-5px);
-  border-color:rgba(247,200,115,.25);
+  transform:
+  translateY(-6px)
+  scale(1.02);
+
+  border-color:rgba(247,200,115,.35);
+
+  box-shadow:
+  0 18px 35px rgba(0,0,0,.35);
 }
+
+/* ================= IMAGE AREA ================= */
 
 .card-top{
   position:relative;
-  background:#fff;
+
+  padding:14px;
+
+  background:
+  linear-gradient(
+    180deg,
+    rgba(255,255,255,.06),
+    rgba(255,255,255,.02)
+  );
 }
 
-.card img{
+/* ================= IMAGE BAG ================= */
+
+.image-box{
   width:100%;
   aspect-ratio:1/1;
-  object-fit:contain;
-  padding:14px;
-  background:#fff;
+
+  border-radius:22px;
+
+  background:
+  linear-gradient(
+    145deg,
+    rgba(255,255,255,.18),
+    rgba(255,255,255,.05)
+  );
+
+  border:1px solid rgba(255,255,255,.08);
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  overflow:hidden;
+
+  position:relative;
 }
+
+.image-box::before{
+  content:"";
+
+  position:absolute;
+  inset:0;
+
+  background:
+  linear-gradient(
+    130deg,
+    transparent 20%,
+    rgba(255,255,255,.12),
+    transparent 80%
+  );
+
+  transform:translateX(-100%);
+  animation:shine 5s infinite;
+}
+
+.image-box img{
+  width:82%;
+  height:82%;
+  object-fit:contain;
+
+  transition:.35s;
+}
+
+.card:hover .image-box img{
+  transform:scale(1.08);
+}
+
+/* ================= OFF BADGE ================= */
 
 .discount{
   position:absolute;
-  top:10px;
-  left:10px;
+  top:24px;
+  left:24px;
 
-  background:linear-gradient(135deg,#ff4d6d,#ff758f);
+  background:
+  linear-gradient(
+    135deg,
+    #ff4d6d,
+    #ff758f
+  );
 
-  padding:6px 10px;
+  padding:6px 11px;
 
   border-radius:30px;
 
   font-size:11px;
   font-weight:700;
+
+  color:white;
+
+  z-index:5;
+
+  box-shadow:
+  0 8px 18px rgba(255,77,109,.3);
 }
+
+/* ================= FAV ================= */
 
 .favorite{
   position:absolute;
-  top:10px;
-  right:10px;
+  top:24px;
+  right:24px;
 
   width:34px;
   height:34px;
@@ -348,12 +501,18 @@ nav{
   align-items:center;
   justify-content:center;
 
-  background:rgba(0,0,0,.08);
+  background:rgba(255,255,255,.15);
 
-  color:#111827;
+  backdrop-filter:blur(10px);
+
+  color:white;
 
   cursor:pointer;
+
+  z-index:5;
 }
+
+/* ================= CONTENT ================= */
 
 .card-content{
   padding:14px;
@@ -361,26 +520,35 @@ nav{
 
 .category{
   color:var(--gold);
+
   font-size:11px;
+  font-weight:700;
+
   margin-bottom:6px;
-  font-weight:600;
+
   text-transform:uppercase;
+
+  letter-spacing:.5px;
 }
 
 .card-content h3{
   font-size:14px;
   line-height:1.45;
+
   min-height:42px;
+
+  font-weight:700;
 }
 
 .rating{
-  margin:8px 0;
+  margin:10px 0;
 
   display:flex;
   align-items:center;
   gap:6px;
 
   font-size:12px;
+
   color:var(--muted);
 }
 
@@ -409,15 +577,15 @@ nav{
 }
 
 .old-price{
+  font-size:12px;
   color:var(--muted);
   text-decoration:line-through;
-  font-size:12px;
 }
 
 .save-text{
   font-size:11px;
+  font-weight:700;
   color:#ff758f;
-  font-weight:600;
 }
 
 /* ================= BUTTON ================= */
@@ -438,9 +606,11 @@ nav{
   color:white;
 
   background:
-  linear-gradient(135deg,
-  var(--primary),
-  #2563eb);
+  linear-gradient(
+    135deg,
+    var(--primary),
+    #2563eb
+  );
 
   transition:.25s;
 }
@@ -478,7 +648,11 @@ nav{
   cursor:pointer;
 
   background:
-  linear-gradient(135deg,var(--gold),#ff9f43);
+  linear-gradient(
+    135deg,
+    var(--gold),
+    #ff9f43
+  );
 
   color:#111827;
 
@@ -496,11 +670,11 @@ nav{
 .cart-icon{
   position:fixed;
 
-  bottom:92px;
-  right:18px;
+  bottom:90px;
+  right:20px;
 
-  width:65px;
-  height:65px;
+  width:68px;
+  height:68px;
 
   border-radius:50%;
 
@@ -513,7 +687,7 @@ nav{
 
   color:#111827;
 
-  font-size:22px;
+  font-size:24px;
 
   cursor:pointer;
 
@@ -526,7 +700,7 @@ nav{
 .cart-count{
   position:absolute;
 
-  top:-3px;
+  top:-4px;
   right:-2px;
 
   width:24px;
@@ -556,7 +730,7 @@ nav{
 
   padding:12px 0;
 
-  background:rgba(7,17,31,.92);
+  background:rgba(7,17,31,.9);
 
   backdrop-filter:blur(20px);
 
@@ -576,11 +750,6 @@ nav{
   font-size:12px;
   text-align:center;
   cursor:pointer;
-  transition:.25s;
-}
-
-.bottom-nav li:hover{
-  color:white;
 }
 
 .bottom-nav i{
@@ -598,6 +767,8 @@ nav{
     bottom:20px;
     border-radius:24px;
     border:1px solid rgba(255,255,255,.08);
+    box-shadow:
+    0 15px 35px rgba(0,0,0,.35);
   }
 
 }
@@ -618,17 +789,7 @@ footer{
 
 /* ================= RESPONSIVE ================= */
 
-@media(max-width:1200px){
-  .products{
-    grid-template-columns:repeat(4,1fr);
-  }
-}
-
 @media(max-width:900px){
-
-  .products{
-    grid-template-columns:repeat(3,1fr);
-  }
 
   .hero{
     flex-direction:column;
@@ -657,12 +818,16 @@ footer{
   }
 
   .hero img{
-    width:190px;
+    width:200px;
   }
 
-  .products{
-    grid-template-columns:repeat(2,1fr);
-    gap:14px;
+  .card{
+    min-width:170px;
+    max-width:170px;
+  }
+
+  .category-header h2{
+    font-size:20px;
   }
 
 }
@@ -735,15 +900,9 @@ footer{
 
 </section>
 
-<!-- ================= TITLE ================= -->
+<!-- ================= CATEGORY CONTAINER ================= -->
 
-<div class="section-title">
-  <h2>Trending Products</h2>
-</div>
-
-<!-- ================= PRODUCTS ================= -->
-
-<section class="products" id="productContainer"></section>
+<div id="categorySections"></div>
 
 <!-- ================= FLOAT CART ================= -->
 
@@ -810,9 +969,6 @@ JSON.parse(localStorage.getItem("products")) || [];
 
 let cart =
 JSON.parse(localStorage.getItem("cart")) || [];
-
-const container =
-document.getElementById("productContainer");
 
 const hero =
 document.getElementById("hero");
@@ -898,20 +1054,23 @@ function save(){
     JSON.stringify(cart)
   );
 
-  display(products);
+  displayCategoryWise(products);
 
   updateCart();
 }
 
-/* ================= DISPLAY ================= */
+/* ================= CATEGORY DISPLAY ================= */
 
-function display(items){
+function displayCategoryWise(products){
 
-  container.innerHTML = "";
+  const mainContainer =
+  document.getElementById("categorySections");
 
-  if(items.length === 0){
+  mainContainer.innerHTML = "";
 
-    container.innerHTML =
+  if(products.length === 0){
+
+    mainContainer.innerHTML =
     `
     <p style="
       padding:30px;
@@ -924,116 +1083,163 @@ function display(items){
     return;
   }
 
-  items.forEach(p => {
+  const grouped = {};
 
-    let qty = getQty(p.id);
+  products.forEach(product => {
 
-    let discount =
-    Math.round(
-      ((p.mrp - p.price) / p.mrp) * 100
-    );
+    if(!grouped[product.category]){
 
-    let saving =
-    p.mrp - p.price;
+      grouped[product.category] = [];
+    }
 
-    container.innerHTML += `
+    grouped[product.category].push(product);
 
-    <div class="card">
+  });
 
-      <div class="card-top">
+  Object.keys(grouped).forEach(category => {
 
-        <img src="${p.image}">
+    const categoryProducts =
+    grouped[category];
 
-        <div class="discount">
-          ${discount}% OFF
-        </div>
+    let html = `
+    
+    <section class="category-section">
 
-        <div class="favorite">
-          <i class="fa fa-heart"></i>
-        </div>
+      <div class="category-header">
+
+        <h2>${category}</h2>
+
+        <span>View All</span>
 
       </div>
 
-      <div class="card-content">
+      <div class="products-slider">
+    `;
 
-        <div class="category">
-          ${p.category}
-        </div>
+    categoryProducts.forEach(p => {
 
-        <h3>
-          ${p.name}
-        </h3>
+      let qty = getQty(p.id);
 
-        <div class="rating">
+      let discount =
+      Math.round(
+        ((p.mrp - p.price) / p.mrp) * 100
+      );
 
-          <i class="fa fa-star"></i>
+      let saving =
+      p.mrp - p.price;
 
-          <span>
-            ${p.rating} Rating
-          </span>
+      html += `
 
-        </div>
+      <div class="card">
 
-        <div class="price-row">
+        <div class="card-top">
 
-          <div class="price-section">
-
-            <div class="price">
-              ₹${p.price}
-            </div>
-
-            <div class="old-price">
-              MRP ₹${p.mrp}
-            </div>
-
+          <div class="discount">
+            ${discount}% OFF
           </div>
 
-          <div class="save-text">
-            Save ₹${saving}
+          <div class="favorite">
+            <i class="fa fa-heart"></i>
+          </div>
+
+          <div class="image-box">
+
+            <img src="${p.image}">
+
           </div>
 
         </div>
 
-        ${
-          qty === 0
+        <div class="card-content">
 
-          ?
+          <div class="category">
+            ${p.category}
+          </div>
 
-          `
-          <button
-            class="add-btn"
-            onclick="addToCart(${p.id})"
-          >
-            Add to Cart
-          </button>
-          `
+          <h3>
+            ${p.name}
+          </h3>
 
-          :
+          <div class="rating">
 
-          `
-          <div class="qty-box">
-
-            <button onclick="dec(${p.id})">
-              -
-            </button>
+            <i class="fa fa-star"></i>
 
             <span>
-              ${qty}
+              ${p.rating} Rating
             </span>
 
-            <button onclick="inc(${p.id})">
-              +
-            </button>
+          </div>
+
+          <div class="price-row">
+
+            <div class="price-section">
+
+              <div class="price">
+                ₹${p.price}
+              </div>
+
+              <div class="old-price">
+                ₹${p.mrp}
+              </div>
+
+            </div>
+
+            <div class="save-text">
+              Save ₹${saving}
+            </div>
 
           </div>
-          `
-        }
+
+          ${
+            qty === 0
+
+            ?
+
+            `
+            <button
+              class="add-btn"
+              onclick="addToCart(${p.id})"
+            >
+              Add to Cart
+            </button>
+            `
+
+            :
+
+            `
+            <div class="qty-box">
+
+              <button onclick="dec(${p.id})">
+                -
+              </button>
+
+              <span>
+                ${qty}
+              </span>
+
+              <button onclick="inc(${p.id})">
+                +
+              </button>
+
+            </div>
+            `
+          }
+
+        </div>
 
       </div>
+      `;
+    });
 
-    </div>
+    html += `
+      </div>
+    </section>
     `;
+
+    mainContainer.innerHTML += html;
+
   });
+
 }
 
 /* ================= UPDATE CART ================= */
@@ -1093,7 +1299,7 @@ document
     p.name.toLowerCase().includes(val)
   );
 
-  display(filtered);
+  displayCategoryWise(filtered);
 
   if(val.length > 0){
 
@@ -1116,7 +1322,7 @@ window.addEventListener("pageshow", function () {
 /* ================= INIT ================= */
 
 updateCart();
-display(products);
+displayCategoryWise(products);
 
 </script>
 
