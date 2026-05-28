@@ -487,17 +487,16 @@ nav{
 }
 
 .card:hover{
-  transform:
-  translateY(-4px)
-  scale(1.01);
+  transform:translateY(-4px);
 
-  border-color:rgba(247,200,115,.28);
+  border-color:rgba(247,200,115,.22);
 
   box-shadow:
-  0 22px 40px rgba(0,0,0,.34),
-  0 0 0 1px rgba(247,200,115,.06);
+  0 22px 40px rgba(0,0,0,.34);
 }
-
+.card:active{
+  transform:scale(.985);
+}
 /* ================= CARD TOP ================= */
 
 .card-top{
@@ -1266,7 +1265,18 @@ footer{
   }
 
 }
+@media (hover:none){
 
+  .card:hover{
+    transform:none;
+    box-shadow:
+    0 18px 45px rgba(0,0,0,.30),
+    inset 0 1px 0 rgba(255,255,255,.08);
+
+    border-color:rgba(255,255,255,.10);
+  }
+
+}
 </style>
 </head>
 
@@ -1562,14 +1572,19 @@ function save(){
     )
   : products;
 
-  displayCategoryWise(filtered);
+ const activeElement = document.activeElement;
 
-  requestAnimationFrame(()=>{
+displayCategoryWise(filtered);
 
-    restoreSliderPosition();
+requestAnimationFrame(()=>{
 
-  });
+  restoreSliderPosition();
 
+  if(activeElement){
+    activeElement.blur();
+  }
+
+});
 }
 /* ================= CREATE PRODUCT CARD ================= */
 
