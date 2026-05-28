@@ -884,17 +884,11 @@ footer{
 
     <div class="hero-buttons">
 
-      <button
-        class="hero-btn primary"
-        onclick="shopNow()"
-      >
+      <button class="hero-btn primary">
         Shop Now
       </button>
 
-      <button
-        class="hero-btn secondary"
-        onclick="goOffers()"
-      >
+      <button class="hero-btn secondary">
         Explore Offers
       </button>
 
@@ -1109,20 +1103,13 @@ function displayCategoryWise(products){
 
     let html = `
     
-    <section
-      class="category-section"
-      id="${category.replace(/\s+/g,'-')}"
-    >
+    <section class="category-section">
 
       <div class="category-header">
 
         <h2>${category}</h2>
 
-        <span
-          onclick="viewAllCategory('${category}')"
-        >
-          View All
-        </span>
+        <span>View All</span>
 
       </div>
 
@@ -1298,45 +1285,6 @@ function goProfile(){
   navigate("profiles.html");
 }
 
-function goOffers(){
-  navigate("offers.html");
-}
-
-/* ================= SHOP NOW ================= */
-
-function shopNow(){
-
-  hero.style.display = "none";
-
-  window.scrollTo({
-    top:document.getElementById("categorySections").offsetTop - 20,
-    behavior:"smooth"
-  });
-
-}
-
-/* ================= VIEW ALL CATEGORY ================= */
-
-function viewAllCategory(category){
-
-  hero.style.display = "none";
-
-  const section =
-  document.getElementById(
-    category.replace(/\s+/g,'-')
-  );
-
-  if(section){
-
-    section.scrollIntoView({
-      behavior:"smooth",
-      block:"start"
-    });
-
-  }
-
-}
-
 /* ================= SEARCH ================= */
 
 document
@@ -1367,4 +1315,16 @@ document
 
 window.addEventListener("pageshow", function () {
 
-  document.body.classLi
+  document.body.classList.remove("page-exit");
+
+});
+
+/* ================= INIT ================= */
+
+updateCart();
+displayCategoryWise(products);
+
+</script>
+
+</body>
+</html>
