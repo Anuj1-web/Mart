@@ -111,6 +111,14 @@ nav{
   font-size:22px;
   font-weight:800;
   letter-spacing:.5px;
+
+  cursor:pointer;
+  user-select:none;
+  transition:.25s;
+}
+
+.logo:hover{
+  transform:scale(1.03);
 }
 
 .logo span{
@@ -870,10 +878,10 @@ footer{
 
 <nav>
 
-  <div class="logo">
-    Balaji <span>Mega Mart</span>
-  </div>
-
+  <div class="logo" onclick="goAdmin()">
+  Balaji <span>Mega Mart</span>
+</div>
+  
   <div class="search-box">
     <input
       type="text"
@@ -882,10 +890,6 @@ footer{
     >
     <i class="fa fa-search"></i>
   </div>
-
-  <button class="admin-btn" onclick="goAdmin()">
-    Admin Login
-  </button>
 
 </nav>
 
