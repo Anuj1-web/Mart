@@ -543,39 +543,256 @@ nav{
   color:white;
 }
 
-/* ================= IMPROVED CONTENT SPACING ================= */
+/* ================= PREMIUM PRODUCT CARD ================= */
+
+.card{
+  min-width:225px;
+  max-width:225px;
+
+  background:
+  linear-gradient(
+    180deg,
+    rgba(255,255,255,.09),
+    rgba(255,255,255,.04)
+  );
+
+  border:1px solid rgba(255,255,255,.10);
+
+  border-radius:30px;
+
+  overflow:hidden;
+
+  backdrop-filter:blur(24px);
+
+  transition:
+  transform .35s ease,
+  box-shadow .35s ease,
+  border-color .35s ease;
+
+  position:relative;
+
+  box-shadow:
+  0 12px 30px rgba(0,0,0,.28),
+  inset 0 1px 0 rgba(255,255,255,.06);
+}
+
+.card::before{
+  content:"";
+
+  position:absolute;
+  inset:0;
+
+  background:
+  linear-gradient(
+    135deg,
+    rgba(255,255,255,.08),
+    transparent 40%
+  );
+
+  pointer-events:none;
+}
+
+.card:hover{
+  transform:
+  translateY(-10px)
+  scale(1.025);
+
+  border-color:rgba(247,200,115,.4);
+
+  box-shadow:
+  0 22px 45px rgba(0,0,0,.38),
+  0 0 0 1px rgba(247,200,115,.08);
+}
+
+/* ================= TOP AREA ================= */
+
+.card-top{
+  position:relative;
+
+  padding:18px 18px 10px;
+
+  background:
+  linear-gradient(
+    180deg,
+    rgba(255,255,255,.05),
+    rgba(255,255,255,.01)
+  );
+}
+
+.image-box{
+  width:100%;
+  aspect-ratio:1/1;
+
+  border-radius:26px;
+
+  background:
+  radial-gradient(
+    circle at top left,
+    rgba(255,255,255,.18),
+    rgba(255,255,255,.05)
+  );
+
+  border:1px solid rgba(255,255,255,.10);
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  overflow:hidden;
+
+  position:relative;
+
+  padding:18px;
+}
+
+.image-box::after{
+  content:"";
+
+  position:absolute;
+  inset:0;
+
+  background:
+  linear-gradient(
+    120deg,
+    transparent,
+    rgba(255,255,255,.08),
+    transparent
+  );
+
+  transform:translateX(-100%);
+  animation:shine 5s infinite;
+}
+
+.image-box img{
+  width:88%;
+  height:88%;
+  object-fit:contain;
+
+  transition:transform .4s ease;
+}
+
+.card:hover .image-box img{
+  transform:scale(1.1);
+}
+
+/* ================= DISCOUNT ================= */
+
+.discount{
+  position:absolute;
+  top:24px;
+  left:24px;
+
+  background:
+  linear-gradient(
+    135deg,
+    #ff4d6d,
+    #ff758f
+  );
+
+  padding:8px 14px;
+
+  border-radius:40px;
+
+  font-size:11px;
+  font-weight:800;
+
+  letter-spacing:.5px;
+
+  color:white;
+
+  z-index:5;
+
+  box-shadow:
+  0 10px 20px rgba(255,77,109,.35);
+}
+
+/* ================= FAVORITE ================= */
+
+.favorite{
+  position:absolute;
+  top:24px;
+  right:24px;
+
+  width:40px;
+  height:40px;
+
+  border-radius:50%;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  background:rgba(255,255,255,.16);
+
+  backdrop-filter:blur(14px);
+
+  color:white;
+
+  cursor:pointer;
+
+  z-index:5;
+
+  transition:.3s;
+}
+
+.favorite:hover{
+  transform:scale(1.08);
+}
+
+.favorite.active{
+  background:
+  linear-gradient(
+    135deg,
+    #ff4d6d,
+    #ff758f
+  );
+
+  box-shadow:
+  0 10px 20px rgba(255,77,109,.35);
+}
+
+/* ================= CONTENT ================= */
 
 .card-content{
-  padding:20px 18px 18px;
+  padding:
+  20px
+  18px
+  22px;
+
+  display:flex;
+  flex-direction:column;
+  gap:10px;
 }
+
+/* CATEGORY */
 
 .category{
   color:var(--gold);
 
   font-size:11px;
-  font-weight:700;
-
-  margin-bottom:10px;
+  font-weight:800;
 
   text-transform:uppercase;
 
-  letter-spacing:.7px;
+  letter-spacing:1px;
 }
+
+/* TITLE */
 
 .card-content h3{
   font-size:15px;
-  line-height:1.6;
-
-  min-height:52px;
+  line-height:1.65;
 
   font-weight:700;
 
-  margin-bottom:12px;
+  min-height:52px;
+
+  color:#f8fbff;
 }
 
-.rating{
-  margin-bottom:16px;
+/* RATING */
 
+.rating{
   display:flex;
   align-items:center;
   gap:7px;
@@ -583,18 +800,27 @@ nav{
   font-size:12px;
 
   color:var(--muted);
+
+  margin-top:2px;
 }
 
 .rating i{
   color:#ffd166;
 }
 
+/* PRICE SECTION */
+
 .price-row{
+  margin-top:4px;
+
+  padding-top:14px;
+
+  border-top:
+  1px solid rgba(255,255,255,.06);
+
   display:flex;
   align-items:flex-end;
   justify-content:space-between;
-
-  margin-bottom:18px;
 }
 
 .price-section{
@@ -604,32 +830,47 @@ nav{
 }
 
 .price{
-  font-size:24px;
+  font-size:26px;
   font-weight:800;
+
   color:var(--green);
+
   line-height:1;
 }
 
 .old-price{
   font-size:13px;
+
   color:var(--muted);
+
   text-decoration:line-through;
 }
 
 .save-text{
   font-size:11px;
-  font-weight:700;
-  color:#ff758f;
-  text-align:right;
-  line-height:1.5;
+  font-weight:800;
+
+  color:#ff7d9a;
+
+  background:
+  rgba(255,77,109,.08);
+
+  padding:6px 10px;
+
+  border-radius:30px;
+
+  border:
+  1px solid rgba(255,77,109,.15);
 }
 
-/* ================= BUTTONS ================= */
+/* ================= BUTTON ================= */
 
 .add-btn{
   width:100%;
 
   border:none;
+
+  margin-top:8px;
 
   padding:14px;
 
@@ -637,7 +878,9 @@ nav{
 
   cursor:pointer;
 
-  font-weight:700;
+  font-weight:800;
+
+  letter-spacing:.3px;
 
   color:white;
 
@@ -648,29 +891,39 @@ nav{
     #2563eb
   );
 
-  transition:.25s;
+  transition:.3s;
 
-  font-size:14px;
+  box-shadow:
+  0 10px 20px rgba(124,58,237,.28);
 }
 
 .add-btn:hover{
   transform:translateY(-2px);
+
+  box-shadow:
+  0 16px 30px rgba(124,58,237,.38);
 }
 
+/* ================= QTY BOX ================= */
+
 .qty-box{
+  margin-top:8px;
+
   display:flex;
   align-items:center;
   justify-content:space-between;
 
-  gap:12px;
+  gap:10px;
 
-  background:rgba(255,255,255,.05);
+  background:
+  rgba(255,255,255,.05);
 
-  border:1px solid rgba(255,255,255,.08);
+  border:
+  1px solid rgba(255,255,255,.08);
 
   padding:8px;
 
-  border-radius:16px;
+  border-radius:18px;
 }
 
 .qty-box button{
@@ -692,13 +945,44 @@ nav{
 
   color:#111827;
 
-  font-size:18px;
-  font-weight:700;
+  font-size:19px;
+  font-weight:800;
+
+  transition:.25s;
+}
+
+.qty-box button:hover{
+  transform:scale(1.06);
 }
 
 .qty-box span{
-  font-size:15px;
-  font-weight:700;
+  font-size:16px;
+  font-weight:800;
+}
+
+/* ================= MOBILE ================= */
+
+@media(max-width:600px){
+
+  .card{
+    min-width:182px;
+    max-width:182px;
+    border-radius:26px;
+  }
+
+  .card-content{
+    padding:18px 16px 20px;
+  }
+
+  .card-content h3{
+    font-size:14px;
+    min-height:50px;
+  }
+
+  .price{
+    font-size:22px;
+  }
+
 }
 
 /* ================= CART ICON ================= */
