@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -514,6 +515,8 @@ nav{
         Add new grocery items or edit existing ones instantly.
       </div>
 
+      <!-- ================= IMAGE PREVIEW ================= -->
+
       <div class="image-preview" id="imagePreview">
 
         <img
@@ -522,6 +525,8 @@ nav{
         >
 
       </div>
+
+      <!-- ================= IMAGE URL ================= -->
 
       <div class="input-box">
 
@@ -534,6 +539,31 @@ nav{
           id="image"
           placeholder="Paste image URL"
           oninput="previewImage()"
+        >
+
+      </div>
+
+      <!-- ================= IMAGE UPLOAD ================= -->
+
+      <div class="input-box">
+
+        <label>
+          Upload Image From Device
+        </label>
+
+        <input
+          type="file"
+          id="imageUpload"
+          accept="image/*"
+          onchange="uploadImage(event)"
+          style="
+            padding:12px;
+            background:rgba(255,255,255,.06);
+            border:1px solid rgba(255,255,255,.08);
+            border-radius:16px;
+            color:white;
+            width:100%;
+          "
         >
 
       </div>
@@ -704,6 +734,34 @@ function previewImage(){
   ).src =
   url ||
   "https://cdn-icons-png.flaticon.com/512/1046/1046857.png";
+}
+
+/* ================= IMAGE UPLOAD ================= */
+
+function uploadImage(event){
+
+  let file =
+  event.target.files[0];
+
+  if(!file) return;
+
+  let reader =
+  new FileReader();
+
+  reader.onload = function(e){
+
+    let imageData = e.target.result;
+
+    document.getElementById(
+      "previewImg"
+    ).src = imageData;
+
+    document.getElementById(
+      "image"
+    ).value = imageData;
+  };
+
+  reader.readAsDataURL(file);
 }
 
 /* ================= DISCOUNT ================= */
@@ -996,6 +1054,7 @@ function clearForm(){
   document.getElementById("price").value = "";
   document.getElementById("rating").value = "";
   document.getElementById("category").value = "";
+  document.getElementById("imageUpload").value = "";
 
   document.getElementById(
     "previewImg"
@@ -1045,3 +1104,4 @@ renderProducts();
 
 </body>
 </html>
+```
