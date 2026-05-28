@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="theme-color" content="#0f172a"/>
+
+<title>Favourite Items - Balaji Mega Mart</title>
+
+<link rel="manifest" href="manifest.json">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+  --bg:#07111f;
+  --bg2:#0d1b2d;
+
+  --card:rgba(255,255,255,0.06);
+  --line:rgba(255,255,255,0.08);
+
+  --text:#f4f7ff;
+  --muted:#9ba8c7;
+
+  --primary:#7c3aed;
+  --primary2:#5b21b6;
+
+  --gold:#f7c873;
+  --green:#38d39f;
+
+  --danger:#ff5f6d;
+
+  --shadow:0 15px 35px rgba(0,0,0,0.35);
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Inter',sans-serif;
+  -webkit-tap-highlight-color:transparent;
+}
+
+body{
+  background:
+  radial-gradient(circle at top left,#1f1147 0%,transparent 30%),
+  radial-gradient(circle at bottom right,#00354f 0%,transparent 30%),
+  linear-gradient(135deg,var(--bg),var(--bg2));
+
+  color:var(--text);
+
+  min-height:100vh;
+
+  overflow-x:hidden;
+
+  animation:fadePage .45s ease;
+}
+
+@keyframes fadePage{
+  from{
+    opacity:0;
+    transform:translateY(10px);
+  }
+  to{
+    opacity:1;
+    transform:none;
+  }
+}
+
+/* ================= NAVBAR ================= */
+
+nav{
+  position:sticky;
+  top:0;
+  z-index:999;
+
+  padding:14px 5%;
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  background:rgba(7,17,31,0.75);
+
+  backdrop-filter:blur(18px);
+
+  border-bottom:1px solid var(--line);
+}
+
+.logo{
+  font-size:24px;
+  font-weight:800;
+}
+
+.logo span{
+  background:linear-gradient(135deg,var(--gold),#ff9f43);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+
+.back-btn{
+  border:none;
+
+  padding:12px 18px;
+
+  border-radius:16px;
+
+  background:
+  linear-gradient(135deg,var(--primary),var(--primary2));
+
+  color:white;
+
+  font-weight:700;
+
+  cursor:pointer;
+
+  transition:.25s;
+}
+
+.back-btn:hover{
+  transform:translateY(-2px);
+}
+
+/* ================= HEADER ================= */
+
+.page-header{
+  width:92%;
+  margin:28px auto 10px;
+
+  background:rgba(255,255,255,.06);
+
+  border:1px solid rgba(255,255,255,.08);
+
+  border-radius:30px;
+
+  padding:28px;
+
+  backdrop-filter:blur(18px);
+
+  box-shadow:var(--shadow);
+
+  position:relative;
+
+  overflow:hidden;
+}
+
+.page-header::before{
+  content:"";
+
+  position:absolute;
+  inset:0;
+
+  background:
+  linear-gradient(
+    120deg,
+    transparent,
+    rgba(255,255,255,.06),
+    transparent
+  );
+
+  transform:translateX(-100%);
+
+  animation:shine 5s infinite;
+}
+
+@keyframes shine{
+  100%{
+    transform:translateX(200%);
+  }
+}
+
+.page-header h1{
+  font-size:34px;
+  margin-bottom:10px;
+
+  position:relative;
+  z-index:2;
+}
+
+.page-header p{
+  color:var(--muted);
+  line-height:1.7;
+
+  position:relative;
+  z-index:2;
+}
+
+/* ================= CATEGORY ================= */
+
+.category-section{
+  width:92%;
+  margin:28px auto;
+}
+
+.category-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  margin-bottom:18px;
+}
+
+.category-header h2{
+  font-size:24px;
+  font-weight:800;
+}
+
+.count{
+  background:rgba(255,255,255,.08);
+
+  padding:8px 14px;
+
+  border-radius:30px;
+
+  font-size:13px;
+
+  color:var(--gold);
+
+  border:1px solid rgba(255,255,255,.08);
+}
+
+/* ================= PRODUCTS ================= */
+
+.products-slider{
+  display:flex;
+  gap:18px;
+
+  overflow-x:auto;
+
+  scroll-behavior:smooth;
+
+  padding-bottom:8px;
+}
+
+.products-slider::-webkit-scrollbar{
+  display:none;
+}
+
+/* ================= CARD ================= */
+
+.card{
+  min-width:220px;
+  max-width:220px;
+
+  background:rgba(255,255,255,0.06);
+
+  border:1px solid rgba(255,255,255,.08);
+
+  border-radius:26px;
+
+  overflow:hidden;
+
+  backdrop-filter:blur(18px);
+
+  position:relative;
+
+  transition:.3s;
+
+  box-shadow:
+  0 10px 25px rgba(0,0,0,.25);
+}
+
+.card:hover{
+  transform:
+  translateY(-6px)
+  scale(1.02);
+
+  border-color:rgba(247,200,115,.35);
+
+  box-shadow:
+  0 18px 35px rgba(0,0,0,.35);
+}
+
+.card-top{
+  position:relative;
+  padding:14px;
+}
+
+.image-box{
+  width:100%;
+  aspect-ratio:1/1;
+
+  border-radius:22px;
+
+  background:
+  linear-gradient(
+    145deg,
+    rgba(255,255,255,.18),
+    rgba(255,255,255,.05)
+  );
+
+  border:1px solid rgba(255,255,255,.08);
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  overflow:hidden;
+}
+
+.image-box img{
+  width:82%;
+  height:82%;
+  object-fit:contain;
+
+  transition:.35s;
+}
+
+.card:hover .image-box img{
+  transform:scale(1.08);
+}
+
+.discount{
+  position:absolute;
+  top:24px;
+  left:24px;
+
+  background:
+  linear-gradient(
+    135deg,
+    #ff4d6d,
+    #ff758f
+  );
+
+  padding:6px 11px;
+
+  border-radius:30px;
+
+  font-size:11px;
+  font-weight:700;
+
+  color:white;
+
+  z-index:5;
+}
+
+.favorite{
+  position:absolute;
+  top:24px;
+  right:24px;
+
+  width:36px;
+  height:36px;
+
+  border-radius:50%;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  background:rgba(255,255,255,.16);
+
+  backdrop-filter:blur(10px);
+
+  color:#ff4d6d;
+
+  cursor:pointer;
+
+  z-index:5;
+
+  transition:.25s;
+}
+
+.favorite:hover{
+  transform:scale(1.08);
+}
+
+/* ================= CONTENT ================= */
+
+.card-content{
+  padding:14px;
+}
+
+.category{
+  color:var(--gold);
+
+  font-size:11px;
+  font-weight:700;
+
+  margin-bottom:6px;
+
+  text-transform:uppercase;
+}
+
+.card-content h3{
+  font-size:15px;
+  line-height:1.5;
+
+  min-height:46px;
+}
+
+.rating{
+  margin:10px 0;
+
+  display:flex;
+  align-items:center;
+  gap:6px;
+
+  font-size:12px;
+
+  color:var(--muted);
+}
+
+.rating i{
+  color:#ffd166;
+}
+
+.price-row{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+
+  margin:14px 0;
+}
+
+.price{
+  font-size:22px;
+  font-weight:800;
+
+  color:var(--green);
+}
+
+.old-price{
+  font-size:12px;
+
+  color:var(--muted);
+
+  text-decoration:line-through;
+}
+
+.add-btn{
+  width:100%;
+
+  border:none;
+
+  padding:12px;
+
+  border-radius:14px;
+
+  cursor:pointer;
+
+  font-weight:700;
+
+  color:white;
+
+  background:
+  linear-gradient(
+    135deg,
+    var(--primary),
+    #2563eb
+  );
+
+  transition:.25s;
+}
+
+.add-btn:hover{
+  transform:translateY(-2px);
+}
+
+.qty-box{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  gap:10px;
+
+  background:rgba(255,255,255,.05);
+
+  border:1px solid rgba(255,255,255,.08);
+
+  padding:6px;
+
+  border-radius:14px;
+}
+
+.qty-box button{
+  width:34px;
+  height:34px;
+
+  border:none;
+
+  border-radius:10px;
+
+  cursor:pointer;
+
+  background:
+  linear-gradient(
+    135deg,
+    var(--gold),
+    #ff9f43
+  );
+
+  color:#111827;
+
+  font-size:18px;
+  font-weight:700;
+}
+
+.qty-box span{
+  font-size:15px;
+  font-weight:700;
+}
+
+/* ================= EMPTY ================= */
+
+.empty{
+  width:92%;
+  margin:60px auto;
+
+  text-align:center;
+
+  background:rgba(255,255,255,.05);
+
+  border:1px solid rgba(255,255,255,.08);
+
+  border-radius:30px;
+
+  padding:60px 20px;
+}
+
+.empty i{
+  font-size:70px;
+
+  margin-bottom:20px;
+
+  color:#ff758f;
+}
+
+.empty h2{
+  margin-bottom:12px;
+}
+
+.empty p{
+  color:var(--muted);
+  line-height:1.7;
+}
+
+/* ================= BOTTOM NAV ================= */
+
+.bottom-nav{
+  position:fixed;
+  bottom:0;
+  left:0;
+
+  width:100%;
+
+  padding:12px 0;
+
+  background:rgba(7,17,31,.92);
+
+  backdrop-filter:blur(20px);
+
+  border-top:1px solid rgba(255,255,255,.08);
+
+  z-index:999;
+}
+
+.bottom-nav ul{
+  display:flex;
+  justify-content:space-around;
+  list-style:none;
+}
+
+.bottom-nav li{
+  color:var(--muted);
+  text-align:center;
+  font-size:12px;
+  cursor:pointer;
+}
+
+.bottom-nav i{
+  display:block;
+  margin-bottom:4px;
+  font-size:18px;
+}
+
+.bottom-nav .active{
+  color:var(--gold);
+}
+
+@media(min-width:700px){
+
+  .bottom-nav{
+    width:420px;
+    left:50%;
+    transform:translateX(-50%);
+    bottom:20px;
+
+    border-radius:24px;
+
+    border:1px solid rgba(255,255,255,.08);
+
+    box-shadow:
+    0 15px 35px rgba(0,0,0,.35);
+  }
+
+}
+
+@media(max-width:600px){
+
+  .page-header h1{
+    font-size:28px;
+  }
+
+  .card{
+    min-width:175px;
+    max-width:175px;
+  }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<nav>
+
+  <div class="logo">
+    Balaji <span>Mega Mart</span>
+  </div>
+
+  <button class="back-btn" onclick="goProfile()">
+    <i class="fa fa-arrow-left"></i>
+    Profile
+  </button>
+
+</nav>
+
+<!-- ================= HEADER ================= -->
+
+<section class="page-header">
+
+  <h1>
+    Your Favourite Items ❤️
+  </h1>
+
+  <p>
+    All products you marked as favourite are saved here category-wise for quick shopping.
+  </p>
+
+</section>
+
+<!-- ================= FAVOURITES ================= -->
+
+<div id="favouritesContainer"></div>
+
+<!-- ================= BOTTOM NAV ================= -->
+
+<div class="bottom-nav">
+
+  <ul>
+
+    <li onclick="goHome()">
+      <i class="fa fa-house"></i>
+      Home
+    </li>
+
+    <li onclick="goCategories()">
+      <i class="fa fa-layer-group"></i>
+      Categories
+    </li>
+
+    <li onclick="goCart()">
+      <i class="fa fa-cart-shopping"></i>
+      Cart
+    </li>
+
+    <li class="active">
+      <i class="fa fa-heart"></i>
+      Favourites
+    </li>
+
+  </ul>
+
+</div>
+
+<script>
+
+/* ================= PWA ================= */
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js');
+}
+
+/* ================= DATA ================= */
+
+let favourites =
+JSON.parse(
+  localStorage.getItem("favourites")
+) || [];
+
+let cart =
+JSON.parse(
+  localStorage.getItem("cart")
+) || [];
+
+/* ================= QTY ================= */
+
+function getQty(id){
+
+  let item =
+  cart.find(p => p.id === id);
+
+  return item ? item.qty : 0;
+}
+
+/* ================= SAVE CART ================= */
+
+function saveCart(){
+
+  localStorage.setItem(
+    "cart",
+    JSON.stringify(cart)
+  );
+
+  renderFavourites();
+}
+
+/* ================= ADD TO CART ================= */
+
+function addToCart(id){
+
+  let item =
+  favourites.find(p => p.id === id);
+
+  let existing =
+  cart.find(p => p.id === id);
+
+  if(existing){
+
+    existing.qty++;
+
+  }else{
+
+    cart.push({
+      ...item,
+      qty:1
+    });
+
+  }
+
+  saveCart();
+}
+
+/* ================= INCREASE ================= */
+
+function inc(id){
+
+  let item =
+  cart.find(p => p.id === id);
+
+  if(item){
+
+    item.qty++;
+
+  }
+
+  saveCart();
+}
+
+/* ================= DECREASE ================= */
+
+function dec(id){
+
+  let item =
+  cart.find(p => p.id === id);
+
+  if(item){
+
+    item.qty--;
+
+    if(item.qty <= 0){
+
+      cart =
+      cart.filter(p => p.id !== id);
+
+    }
+
+  }
+
+  saveCart();
+}
+
+/* ================= REMOVE FAV ================= */
+
+function removeFavourite(id){
+
+  favourites =
+  favourites.filter(p => p.id !== id);
+
+  localStorage.setItem(
+    "favourites",
+    JSON.stringify(favourites)
+  );
+
+  renderFavourites();
+}
+
+/* ================= CREATE CARD ================= */
+
+function createCard(p){
+
+  let qty = getQty(p.id);
+
+  let discount =
+  Math.round(
+    ((p.mrp - p.price) / p.mrp) * 100
+  );
+
+  return `
+
+  <div class="card">
+
+    <div class="card-top">
+
+      <div class="discount">
+        ${discount}% OFF
+      </div>
+
+      <div
+        class="favorite"
+        onclick="removeFavourite(${p.id})"
+      >
+        <i class="fa fa-heart"></i>
+      </div>
+
+      <div class="image-box">
+
+        <img src="${p.image}">
+
+      </div>
+
+    </div>
+
+    <div class="card-content">
+
+      <div class="category">
+        ${p.category}
+      </div>
+
+      <h3>
+        ${p.name}
+      </h3>
+
+      <div class="rating">
+
+        <i class="fa fa-star"></i>
+
+        <span>
+          ${p.rating || 4.5} Rating
+        </span>
+
+      </div>
+
+      <div class="price-row">
+
+        <div>
+
+          <div class="price">
+            ₹${p.price}
+          </div>
+
+          <div class="old-price">
+            ₹${p.mrp}
+          </div>
+
+        </div>
+
+      </div>
+
+      ${
+        qty === 0
+
+        ?
+
+        `
+        <button
+          class="add-btn"
+          onclick="addToCart(${p.id})"
+        >
+          Add to Cart
+        </button>
+        `
+
+        :
+
+        `
+        <div class="qty-box">
+
+          <button onclick="dec(${p.id})">
+            -
+          </button>
+
+          <span>
+            ${qty}
+          </span>
+
+          <button onclick="inc(${p.id})">
+            +
+          </button>
+
+        </div>
+        `
+      }
+
+    </div>
+
+  </div>
+  `;
+}
+
+/* ================= RENDER ================= */
+
+function renderFavourites(){
+
+  const container =
+  document.getElementById(
+    "favouritesContainer"
+  );
+
+  if(favourites.length === 0){
+
+    container.innerHTML = `
+
+    <div class="empty">
+
+      <i class="fa fa-heart-circle-xmark"></i>
+
+      <h2>
+        No Favourite Items Yet
+      </h2>
+
+      <p>
+        Tap the heart icon on products
+        to save them here.
+      </p>
+
+    </div>
+    `;
+
+    return;
+  }
+
+  container.innerHTML = "";
+
+  const grouped = {};
+
+  favourites.forEach(item=>{
+
+    if(!grouped[item.category]){
+
+      grouped[item.category] = [];
+    }
+
+    grouped[item.category].push(item);
+
+  });
+
+  Object.keys(grouped).forEach(category=>{
+
+    let items = grouped[category];
+
+    let html = `
+
+    <section class="category-section">
+
+      <div class="category-header">
+
+        <h2>
+          ${category}
+        </h2>
+
+        <div class="count">
+          ${items.length} Items
+        </div>
+
+      </div>
+
+      <div class="products-slider">
+    `;
+
+    items.forEach(item=>{
+
+      html += createCard(item);
+
+    });
+
+    html += `
+      </div>
+    </section>
+    `;
+
+    container.innerHTML += html;
+
+  });
+
+}
+
+/* ================= ROUTING ================= */
+
+function goHome(){
+  window.location.href = "index.html";
+}
+
+function goCategories(){
+  window.location.href = "categories.html";
+}
+
+function goCart(){
+  window.location.href = "carts.html";
+}
+
+function goProfile(){
+  window.location.href = "profiles.html";
+}
+
+/* ================= INIT ================= */
+
+renderFavourites();
+
+</script>
+
+</body>
+</html>
