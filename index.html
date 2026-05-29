@@ -1552,6 +1552,8 @@ function dec(id){
 
 /* ================= SAVE ================= */
 
+/* ================= SAVE ================= */
+
 function save(){
 
   localStorage.setItem(
@@ -1572,19 +1574,33 @@ function save(){
     )
   : products;
 
- const activeElement = document.activeElement;
+  preserveSliderPosition();
 
-displayCategoryWise(filtered);
+  // CHECK IF USER IS INSIDE VIEW ALL PAGE
+  const viewAllTitle =
+  document.querySelector(".all-products-grid");
 
-requestAnimationFrame(()=>{
+  if(viewAllTitle){
 
-  restoreSliderPosition();
+    const heading =
+    document.querySelector(".category-header h2")
+    .innerText
+    .replace(" - All Products","");
 
-  if(activeElement){
-    activeElement.blur();
+    viewAll(heading);
+
+  }else{
+
+    displayCategoryWise(filtered);
+
   }
 
-});
+  requestAnimationFrame(()=>{
+
+    restoreSliderPosition();
+
+  });
+
 }
 /* ================= CREATE PRODUCT CARD ================= */
 
