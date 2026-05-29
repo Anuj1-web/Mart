@@ -1439,7 +1439,12 @@ async function loadProducts(){
     image:p.image,
     mrp:p.mrp,
     price:p.sp,
-    category:p.category,
+    category: p.category
+  ? p.category
+      .trim()
+      .toLowerCase()
+      .replace(/\b\w/g, l => l.toUpperCase())
+  : "Other",
     rating:p.rating
   }));
 
