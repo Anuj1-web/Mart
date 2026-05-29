@@ -792,18 +792,35 @@ async function loadProducts(){
   }
 
   products =
-  (data || []).map(p => ({
-    id:p.id,
-    name:p.name,
-    image:p.image,
-    mrp:p.mrp,
-    price:p.sp,
-    category:p.category,
-    rating:p.rating
-  }));
+  (data || []).map(p => {
+
+    let formattedCategory =
+    p.category
+    ?.trim()
+    .toLowerCase()
+    .split(" ")
+    .map(word =>
+      word.charAt(0).toUpperCase() +
+      word.slice(1)
+    )
+    .join(" ");
+
+    return {
+      id:p.id,
+      name:p.name,
+      image:p.image,
+      mrp:p.mrp,
+      price:p.sp,
+      category:formattedCategory,
+      rating:p.rating
+    };
+
+  });
 
   categories = [
-    ...new Set(products.map(p => p.category))
+    ...new Set(
+      products.map(p => p.category)
+    )
   ];
 
   selectedCategory =
@@ -817,7 +834,6 @@ async function loadProducts(){
   }
 
 }
-
 /* ================= RENDER CATEGORIES ================= */
 
 function renderCategories(){
