@@ -1369,7 +1369,22 @@ footer{
   Balaji Mega Mart © 2026 • Premium Grocery App
 </footer>
 
+```html
 <script>
+
+/* ================= SUPABASE ================= */
+
+const supabaseUrl =
+'https://bjmsrqdptyzxeykwvlqp.supabase.co';
+
+const supabaseKey =
+'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJqbXNycWRwdHl6eGV5a3d2bHFwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwMTM4NTQsImV4cCI6MjA5NTU4OTg1NH0.22zwucZ3wpEBLN9fmwLK-wfboJzP3qeLjCpeQf3CKrU';
+
+const supabaseClient =
+supabase.createClient(
+  supabaseUrl,
+  supabaseKey
+);
 
 /* ================= PWA ================= */
 
@@ -1379,8 +1394,7 @@ if ('serviceWorker' in navigator) {
 
 /* ================= DATA ================= */
 
-let products =
-JSON.parse(localStorage.getItem("products")) || [];
+let products = [];
 
 let cart =
 JSON.parse(localStorage.getItem("cart")) || [];
@@ -1398,6 +1412,39 @@ let savedScrollPosition = 0;
 
 const hero =
 document.getElementById("hero");
+
+/* ================= LOAD PRODUCTS ================= */
+
+async function loadProducts(){
+
+  const {
+    data,
+    error
+  } = await supabaseClient
+    .from('products')
+    .select('*')
+    .order('id',{ascending:false});
+
+  if(error){
+
+    console.log(error);
+
+    return;
+  }
+
+  products =
+  (data || []).map(p => ({
+    id:p.id,
+    name:p.name,
+    image:p.image,
+    mrp:p.mrp,
+    price:p.sp,
+    category:p.category,
+    rating:p.rating
+  }));
+
+  displayCategoryWise(products);
+}
 
 /* ================= FUNCTIONS ================= */
 
@@ -1596,7 +1643,6 @@ function save(){
 
   preserveSliderPosition();
 
-  // KEEP USER INSIDE VIEW ALL PAGE
   if(currentViewAllCategory){
 
     viewAll(currentViewAllCategory,false);
@@ -1866,7 +1912,6 @@ function viewAll(category,scrollTop = true){
 
   mainContainer.innerHTML = html;
 
-  // ONLY SCROLL TO TOP WHEN USER OPENS VIEW ALL
   if(scrollTop){
 
     window.scrollTo({
@@ -1989,7 +2034,8 @@ window.addEventListener("pageshow", function () {
 /* ================= INIT ================= */
 
 updateCart();
-displayCategoryWise(products);
+
+loadProducts();
 
 </script>
 
