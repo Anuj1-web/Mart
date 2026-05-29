@@ -721,7 +721,7 @@ const supabaseUrl =
 'https://bjmsrqdptyzxeykwvlqp.supabase.co';
 
 const supabaseKey =
-'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJqbXNycWRwdHl6eGV5a3d2bHFwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwMTM4NTQsImV4cCI6MjA5NTU4OTg1NH0.22zwucZ3wpEBLN9fmwLK-wfboJzP3qeLjCpeQf3CKrU';
+'YOUR_SUPABASE_ANON_KEY';
 
 const supabaseClient =
 supabase.createClient(
@@ -788,12 +788,29 @@ function calculateDiscount(){
   }
 }
 
+/* ================= FORMAT CATEGORY ================= */
+
+function formatCategory(category){
+
+  return category
+  .trim()
+  .toLowerCase()
+  .split(" ")
+  .map(word =>
+
+    word.charAt(0).toUpperCase() +
+    word.slice(1)
+
+  )
+  .join(" ");
+}
+
 /* ================= SAVE PRODUCT ================= */
 
 async function saveProduct(){
 
   let name =
-  document.getElementById("name").value;
+  document.getElementById("name").value.trim();
 
   let mrp =
   document.getElementById("mrp").value;
@@ -805,13 +822,14 @@ async function saveProduct(){
   document.getElementById("rating").value || 4.5;
 
   let category =
-  document.getElementById("category").value;
+  formatCategory(
+    document.getElementById("category").value
+  );
 
   let file =
   document.getElementById("imageUpload").files[0];
 
   if(
-    !file ||
     !name ||
     !mrp ||
     !price ||
@@ -825,69 +843,116 @@ async function saveProduct(){
 
   try{
 
-    let fileName =
-    `${Date.now()}-${file.name}`;
+    let imageUrl = "";
 
     /* ===== UPLOAD IMAGE ===== */
 
-    const {
-      error: uploadError
-    } = await supabaseClient
-      .storage
-      .from('products')
-      .upload(fileName, file, {
-  cacheControl: '3600',
-  upsert: true
-});
+    if(file){
 
-    if(uploadError){
+      let fileName =
+      `${Date.now()}-${file.name}`;
 
-      console.log(uploadError);
+      const {
+        error: uploadError
+      } = await supabaseClient
+        .storage
+        .from('products')
+        .upload(fileName,file,{
+          cacheControl:'3600',
+          upsert:true
+        });
 
-      alert("Image upload failed");
+      if(uploadError){
 
-      return;
+        console.log(uploadError);
+
+        alert("Image upload failed");
+
+        return;
+      }
+
+      const {
+        data:urlData
+      } = supabaseClient
+        .storage
+        .from('products')
+        .getPublicUrl(fileName);
+
+      imageUrl =
+      urlData.publicUrl;
     }
 
-    /* ===== GET IMAGE URL ===== */
+    /* ===== UPDATE PRODUCT ===== */
 
-    const {
-      data:urlData
-    } = supabaseClient
-      .storage
-      .from('products')
-      .getPublicUrl(fileName);
+    if(editId){
 
-    const imageUrl =
-    urlData.publicUrl;
+      let oldProduct =
+      products.find(p => p.id === editId);
 
-    /* ===== INSERT PRODUCT ===== */
-
-    const {
-      error: insertError
-    } = await supabaseClient
-      .from('products')
-      .insert([
-        {
+      const {
+        error:updateError
+      } = await supabaseClient
+        .from('products')
+        .update({
           name:name,
-          image:imageUrl,
+          image:imageUrl || oldProduct.image,
           mrp:Number(mrp),
           sp:Number(price),
           category:category,
           rating:Number(rating)
-        }
-      ]);
+        })
+        .eq('id',editId);
 
-    if(insertError){
+      if(updateError){
 
-      console.log(insertError);
+        console.log(updateError);
 
-      alert("Product save failed");
+        alert("Update failed");
 
-      return;
+        return;
+      }
+
+      alert("Product Updated");
+
     }
 
-    alert("Product Added Successfully");
+    /* ===== INSERT PRODUCT ===== */
+
+    else{
+
+      if(!file){
+
+        alert("Please upload image");
+
+        return;
+      }
+
+      const {
+        error:insertError
+      } = await supabaseClient
+        .from('products')
+        .insert([
+          {
+            name:name,
+            image:imageUrl,
+            mrp:Number(mrp),
+            sp:Number(price),
+            category:category,
+            rating:Number(rating)
+          }
+        ]);
+
+      if(insertError){
+
+        console.log(insertError);
+
+        alert("Product save failed");
+
+        return;
+      }
+
+      alert("Product Added Successfully");
+    }
 
     clearForm();
 
@@ -911,7 +976,7 @@ async function loadProducts(){
   } = await supabaseClient
     .from('products')
     .select('*')
-    .order('id', { ascending:false });
+    .order('id',{ascending:false});
 
   if(error){
 
@@ -934,8 +999,7 @@ function renderProducts(list = products){
 
   if(list.length === 0){
 
-    grid.innerHTML =
-    `
+    grid.innerHTML = `
     <div class="empty">
       No products added yet
     </div>
@@ -996,6 +1060,14 @@ function renderProducts(list = products){
         <div class="card-buttons">
 
           <button
+            class="edit-btn"
+            onclick="editProduct(${p.id})"
+          >
+            <i class="fa fa-pen"></i>
+            Edit
+          </button>
+
+          <button
             class="delete-btn"
             onclick="deleteProduct(${p.id})"
           >
@@ -1012,7 +1084,45 @@ function renderProducts(list = products){
   });
 }
 
-/* ================= DELETE ================= */
+/* ================= EDIT PRODUCT ================= */
+
+function editProduct(id){
+
+  let product =
+  products.find(p => p.id === id);
+
+  if(!product) return;
+
+  editId = id;
+
+  document.getElementById("name").value =
+  product.name;
+
+  document.getElementById("mrp").value =
+  product.mrp;
+
+  document.getElementById("price").value =
+  product.sp;
+
+  document.getElementById("rating").value =
+  product.rating;
+
+  document.getElementById("category").value =
+  product.category;
+
+  document.getElementById(
+    "previewImg"
+  ).src = product.image;
+
+  calculateDiscount();
+
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
+}
+
+/* ================= DELETE PRODUCT ================= */
 
 async function deleteProduct(id){
 
@@ -1026,7 +1136,7 @@ async function deleteProduct(id){
   } = await supabaseClient
     .from('products')
     .delete()
-    .eq('id', id);
+    .eq('id',id);
 
   if(error){
 
@@ -1037,10 +1147,12 @@ async function deleteProduct(id){
     return;
   }
 
+  alert("Product Deleted");
+
   loadProducts();
 }
 
-/* ================= CLEAR ================= */
+/* ================= CLEAR FORM ================= */
 
 function clearForm(){
 
@@ -1097,7 +1209,7 @@ function goHome(){
 
 loadProducts();
 
-  </script>
+</script>
 
 </body>
 </html>
