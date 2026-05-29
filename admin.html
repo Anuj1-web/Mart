@@ -711,13 +711,25 @@ nav{
   </div>
 
 </div>
-
 <script>
+
+/* ================= SUPABASE ================= */
+
+const supabaseUrl =
+'https://bjmsrqdptzxeykwvlqp.supabase.co';
+
+const supabaseKey =
+'YOUR_ANON_PUBLIC_KEY';
+
+const supabaseClient =
+supabase.createClient(
+  supabaseUrl,
+  supabaseKey
+);
 
 /* ================= DATA ================= */
 
-let products =
-JSON.parse(localStorage.getItem("products")) || [];
+let products = [];
 
 let editId = null;
 
@@ -725,42 +737,22 @@ let editId = null;
 
 function previewImage(){
 
-  let url =
-  document.getElementById("image").value;
+  const file =
+  document.getElementById("imageUpload").files[0];
 
-  document.getElementById(
-    "previewImg"
-  ).src =
-  url ||
-  "https://cdn-icons-png.flaticon.com/512/1046/1046857.png";
-}
+  if(file){
 
-/* ================= IMAGE UPLOAD ================= */
+    const reader = new FileReader();
 
-function uploadImage(event){
+    reader.onload = function(e){
 
-  let file =
-  event.target.files[0];
+      document.getElementById(
+        "previewImg"
+      ).src = e.target.result;
+    };
 
-  if(!file) return;
-
-  let reader =
-  new FileReader();
-
-  reader.onload = function(e){
-
-    let imageData = e.target.result;
-
-    document.getElementById(
-      "previewImg"
-    ).src = imageData;
-
-    document.getElementById(
-      "image"
-    ).value = imageData;
-  };
-
-  reader.readAsDataURL(file);
+    reader.readAsDataURL(file);
+  }
 }
 
 /* ================= DISCOUNT ================= */
@@ -796,10 +788,7 @@ function calculateDiscount(){
 
 /* ================= SAVE PRODUCT ================= */
 
-function saveProduct(){
-
-  let image =
-  document.getElementById("image").value;
+async function saveProduct(){
 
   let name =
   document.getElementById("name").value;
@@ -816,8 +805,11 @@ function saveProduct(){
   let category =
   document.getElementById("category").value;
 
+  let file =
+  document.getElementById("imageUpload").files[0];
+
   if(
-    !image ||
+    !file ||
     !name ||
     !mrp ||
     !price ||
@@ -829,62 +821,103 @@ function saveProduct(){
     return;
   }
 
-  if(editId){
+  try{
 
-    products =
-    products.map(p =>
+    let fileName =
+    `${Date.now()}-${file.name}`;
 
-      p.id === editId
+    /* ===== UPLOAD IMAGE ===== */
 
-      ?
+    const {
+      error: uploadError
+    } = await supabaseClient
+      .storage
+      .from('products')
+      .upload(fileName, file);
 
-      {
-        ...p,
-        image,
-        name,
-        mrp:Number(mrp),
-        price:Number(price),
-        rating:Number(rating),
-        category
-      }
+    if(uploadError){
 
-      :
+      console.log(uploadError);
 
-      p
-    );
+      alert("Image upload failed");
 
-  }else{
+      return;
+    }
 
-    products.unshift({
+    /* ===== GET IMAGE URL ===== */
 
-      id:Date.now(),
+    const {
+      data:urlData
+    } = supabaseClient
+      .storage
+      .from('products')
+      .getPublicUrl(fileName);
 
-      image,
+    const imageUrl =
+    urlData.publicUrl;
 
-      name,
+    /* ===== INSERT PRODUCT ===== */
 
-      mrp:Number(mrp),
+    const {
+      error: insertError
+    } = await supabaseClient
+      .from('products')
+      .insert([
+        {
+          name:name,
+          image:imageUrl,
+          mrp:Number(mrp),
+          sp:Number(price),
+          category:category,
+          rating:Number(rating)
+        }
+      ]);
 
-      price:Number(price),
+    if(insertError){
 
-      rating:Number(rating),
+      console.log(insertError);
 
-      category
+      alert("Product save failed");
 
-    });
+      return;
+    }
 
+    alert("Product Added Successfully");
+
+    clearForm();
+
+    loadProducts();
+
+  }catch(err){
+
+    console.log(err);
+
+    alert("Something went wrong");
+  }
+}
+
+/* ================= LOAD PRODUCTS ================= */
+
+async function loadProducts(){
+
+  const {
+    data,
+    error
+  } = await supabaseClient
+    .from('products')
+    .select('*')
+    .order('id', { ascending:false });
+
+  if(error){
+
+    console.log(error);
+
+    return;
   }
 
-  localStorage.setItem(
-    "products",
-    JSON.stringify(products)
-  );
+  products = data || [];
 
   renderProducts();
-
-  clearForm();
-
-  alert("Product Saved Successfully");
 }
 
 /* ================= RENDER PRODUCTS ================= */
@@ -912,7 +945,7 @@ function renderProducts(list = products){
 
     let discount =
     Math.round(
-      ((p.mrp - p.price) / p.mrp) * 100
+      ((p.mrp - p.sp) / p.mrp) * 100
     );
 
     grid.innerHTML += `
@@ -940,7 +973,7 @@ function renderProducts(list = products){
           <div>
 
             <div class="sp">
-              ₹${p.price}
+              ₹${p.sp}
             </div>
 
             <div class="mp">
@@ -956,14 +989,6 @@ function renderProducts(list = products){
         </div>
 
         <div class="card-buttons">
-
-          <button
-            class="edit-btn"
-            onclick="editProduct(${p.id})"
-          >
-            <i class="fa fa-pen"></i>
-            Edit
-          </button>
 
           <button
             class="delete-btn"
@@ -982,63 +1007,32 @@ function renderProducts(list = products){
   });
 }
 
-/* ================= EDIT ================= */
-
-function editProduct(id){
-
-  let p =
-  products.find(item => item.id === id);
-
-  if(!p) return;
-
-  editId = id;
-
-  document.getElementById("image").value =
-  p.image;
-
-  document.getElementById("name").value =
-  p.name;
-
-  document.getElementById("mrp").value =
-  p.mrp;
-
-  document.getElementById("price").value =
-  p.price;
-
-  document.getElementById("rating").value =
-  p.rating;
-
-  document.getElementById("category").value =
-  p.category;
-
-  previewImage();
-
-  calculateDiscount();
-
-  window.scrollTo({
-    top:0,
-    behavior:"smooth"
-  });
-}
-
 /* ================= DELETE ================= */
 
-function deleteProduct(id){
+async function deleteProduct(id){
 
   let confirmDelete =
   confirm("Delete this product?");
 
   if(!confirmDelete) return;
 
-  products =
-  products.filter(p => p.id !== id);
+  const {
+    error
+  } = await supabaseClient
+    .from('products')
+    .delete()
+    .eq('id', id);
 
-  localStorage.setItem(
-    "products",
-    JSON.stringify(products)
-  );
+  if(error){
 
-  renderProducts();
+    console.log(error);
+
+    alert("Delete failed");
+
+    return;
+  }
+
+  loadProducts();
 }
 
 /* ================= CLEAR ================= */
@@ -1047,7 +1041,6 @@ function clearForm(){
 
   editId = null;
 
-  document.getElementById("image").value = "";
   document.getElementById("name").value = "";
   document.getElementById("mrp").value = "";
   document.getElementById("price").value = "";
@@ -1097,10 +1090,10 @@ function goHome(){
 
 /* ================= INIT ================= */
 
-renderProducts();
+loadProducts();
 
-</script>
+  </script>
 
 </body>
 </html>
-```
+
