@@ -741,12 +741,26 @@ nav{
 
 </div>
 
-<script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+
+/* ================= SUPABASE ================= */
+
+const supabaseUrl =
+'https://bjmsrqdptyzxeykwvlqp.supabase.co';
+
+const supabaseKey =
+'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJqbXNycWRwdHl6eGV5a3d2bHFwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwMTM4NTQsImV4cCI6MjA5NTU4OTg1NH0.22zwucZ3wpEBLN9fmwLK-wfboJzP3qeLjCpeQf3CKrU';
+
+const supabaseClient =
+supabase.createClient(
+  supabaseUrl,
+  supabaseKey
+);
 
 /* ================= DATA ================= */
 
-let products =
-JSON.parse(localStorage.getItem("products")) || [];
+let products = [];
 
 let cart =
 JSON.parse(localStorage.getItem("cart")) || [];
@@ -754,19 +768,54 @@ JSON.parse(localStorage.getItem("cart")) || [];
 let favorites =
 JSON.parse(localStorage.getItem("favorites")) || [];
 
-let categories = [
-  ...new Set(products.map(p => p.category))
-];
+let categories = [];
 
-let selectedCategory =
-categories[0] || "";
+let selectedCategory = "";
 
-/* ================= INIT ================= */
+/* ================= LOAD PRODUCTS ================= */
 
-renderCategories();
+async function loadProducts(){
 
-if(selectedCategory){
-  renderProducts(selectedCategory);
+  const {
+    data,
+    error
+  } = await supabaseClient
+    .from('products')
+    .select('*')
+    .order('id',{ascending:false});
+
+  if(error){
+
+    console.log(error);
+
+    return;
+  }
+
+  products =
+  (data || []).map(p => ({
+    id:p.id,
+    name:p.name,
+    image:p.image,
+    mrp:p.mrp,
+    price:p.sp,
+    category:p.category,
+    rating:p.rating
+  }));
+
+  categories = [
+    ...new Set(products.map(p => p.category))
+  ];
+
+  selectedCategory =
+  categories[0] || "";
+
+  renderCategories();
+
+  if(selectedCategory){
+
+    renderProducts(selectedCategory);
+  }
+
 }
 
 /* ================= RENDER CATEGORIES ================= */
@@ -1142,6 +1191,10 @@ window.addEventListener("pageshow",()=>{
   );
 
 });
+
+/* ================= INIT ================= */
+
+loadProducts();
 
 </script>
 
