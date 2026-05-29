@@ -691,9 +691,9 @@ if ('serviceWorker' in navigator) {
 
 /* ================= DATA ================= */
 
-let favourites =
+let favorites =
 JSON.parse(
-  localStorage.getItem("favourites")
+  localStorage.getItem("favorites")
 ) || [];
 
 let cart =
@@ -720,7 +720,7 @@ function saveCart(){
     JSON.stringify(cart)
   );
 
-  renderFavourites();
+  renderFavorites();
 }
 
 /* ================= ADD TO CART ================= */
@@ -728,7 +728,7 @@ function saveCart(){
 function addToCart(id){
 
   let item =
-  favourites.find(p => p.id === id);
+  favorites.find(p => p.id === id);
 
   let existing =
   cart.find(p => p.id === id);
@@ -788,19 +788,19 @@ function dec(id){
   saveCart();
 }
 
-/* ================= REMOVE FAV ================= */
+/* ================= REMOVE FAVORITE ================= */
 
-function removeFavourite(id){
+function removeFavorite(id){
 
-  favourites =
-  favourites.filter(p => p.id !== id);
+  favorites =
+  favorites.filter(p => p.id !== id);
 
   localStorage.setItem(
-    "favourites",
-    JSON.stringify(favourites)
+    "favorites",
+    JSON.stringify(favorites)
   );
 
-  renderFavourites();
+  renderFavorites();
 }
 
 /* ================= CREATE CARD ================= */
@@ -825,8 +825,8 @@ function createCard(p){
       </div>
 
       <div
-        class="favorite"
-        onclick="removeFavourite(${p.id})"
+        class="favorite active"
+        onclick="removeFavorite(${p.id})"
       >
         <i class="fa fa-heart"></i>
       </div>
@@ -918,14 +918,14 @@ function createCard(p){
 
 /* ================= RENDER ================= */
 
-function renderFavourites(){
+function renderFavorites(){
 
   const container =
   document.getElementById(
     "favouritesContainer"
   );
 
-  if(favourites.length === 0){
+  if(favorites.length === 0){
 
     container.innerHTML = `
 
@@ -952,7 +952,7 @@ function renderFavourites(){
 
   const grouped = {};
 
-  favourites.forEach(item=>{
+  favorites.forEach(item=>{
 
     if(!grouped[item.category]){
 
@@ -1023,7 +1023,7 @@ function goProfile(){
 
 /* ================= INIT ================= */
 
-renderFavourites();
+renderFavorites();
 
 </script>
 
