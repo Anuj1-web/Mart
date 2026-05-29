@@ -346,19 +346,6 @@ nav{
 .category-section{
   width:92%;
   margin:36px auto;
-
-  animation:fadeUp .5s ease;
-}
-
-@keyframes fadeUp{
-  from{
-    opacity:0;
-    transform:translateY(20px);
-  }
-  to{
-    opacity:1;
-    transform:none;
-  }
 }
 
 .category-header{
@@ -381,8 +368,13 @@ nav{
   font-weight:700;
 
   cursor:pointer;
+
+  transition:opacity .2s ease;
 }
 
+.category-header span:hover{
+  opacity:.8;
+}
 /* ================= PRODUCTS SLIDER ================= */
 
 .products-slider{
