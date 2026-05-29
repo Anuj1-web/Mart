@@ -1404,6 +1404,10 @@ JSON.parse(localStorage.getItem("favorites")) || [];
 
 let currentViewAllCategory = null;
 
+/* ================= SCROLL SAVE ================= */
+
+let savedScrollPosition = 0;
+
 const hero =
 document.getElementById("hero");
 
@@ -1485,11 +1489,33 @@ function restoreSliderPosition(){
   },20);
 }
 
+/* ================= SCROLL SAVE ================= */
+
+function saveScroll(){
+
+  savedScrollPosition =
+  window.scrollY;
+}
+
+function restoreScroll(){
+
+  requestAnimationFrame(()=>{
+
+    window.scrollTo({
+      top:savedScrollPosition,
+      behavior:"instant"
+    });
+
+  });
+}
+
 /* ================= ADD ================= */
 
 function addToCart(id){
 
   preserveSliderPosition();
+
+  saveScroll();
 
   let item =
   products.find(p => p.id === id);
@@ -1519,6 +1545,8 @@ function inc(id){
 
   preserveSliderPosition();
 
+  saveScroll();
+
   let item =
   cart.find(p => p.id === id);
 
@@ -1535,6 +1563,8 @@ function inc(id){
 function dec(id){
 
   preserveSliderPosition();
+
+  saveScroll();
 
   let item =
   cart.find(p => p.id === id);
@@ -1581,7 +1611,7 @@ function save(){
   // KEEP USER INSIDE VIEW ALL PAGE
   if(currentViewAllCategory){
 
-    viewAll(currentViewAllCategory);
+    viewAll(currentViewAllCategory,false);
 
   }else{
 
@@ -1592,6 +1622,8 @@ function save(){
   requestAnimationFrame(()=>{
 
     restoreSliderPosition();
+
+    restoreScroll();
 
   });
 
@@ -1802,7 +1834,7 @@ function displayCategoryWise(products){
 
 /* ================= VIEW ALL ================= */
 
-function viewAll(category){
+function viewAll(category,scrollTop = true){
 
   currentViewAllCategory = category;
 
@@ -1846,10 +1878,15 @@ function viewAll(category){
 
   mainContainer.innerHTML = html;
 
-  window.scrollTo({
-    top:0,
-    behavior:"smooth"
-  });
+  // ONLY SCROLL TO TOP WHEN USER OPENS VIEW ALL
+  if(scrollTop){
+
+    window.scrollTo({
+      top:0,
+      behavior:"smooth"
+    });
+
+  }
 }
 
 /* ================= BACK HOME ================= */
